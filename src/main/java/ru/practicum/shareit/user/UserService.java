@@ -12,5 +12,9 @@ public class UserService {
         return userStorage.addUser(user);
     }
 
+    public User updateUser(long id, User user){
+        return userStorage.updateUser(id, user);
+    }
+
 
 }
