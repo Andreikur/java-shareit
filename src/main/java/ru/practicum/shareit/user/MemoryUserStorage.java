@@ -57,7 +57,8 @@ public class MemoryUserStorage implements UserStorage {
     }
 
     public void removeUser(long id){
-
+        allEmail.remove(allUsers.get(id).getEmail());
+        allUsers.remove(id);
     }
 
     private void checkEmail(String email) {
