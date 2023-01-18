@@ -31,18 +31,33 @@ public class MemoryUserStorage implements UserStorage {
     }
 
     //Обновление пользователя
-    public User updateUser(long id, User user) {
+    public User updateUser(long id, Map<String, String> userData) {
         checkUser(id);
+        checkEmail(userData.get("email"));
         User currentUser = allUsers.get(id);
-        if(user.getEmail()!= null) {
+        if(userData.containsKey("email")) {
             allEmail.remove(currentUser.getEmail());
-            currentUser.setEmail(user.getEmail());
-            allEmail.add(user.getEmail());
+            currentUser.setEmail(userData.get("email"));
+            allEmail.add(currentUser.getEmail());
         }
-        if(user.getName()!= null) {
-            currentUser.setName(user.getName());
+        if(userData.containsKey("name")) {
+            currentUser.setName(userData.get("name"));
         }
         return currentUser;
+    }
+
+    //получаем пользователя по id
+    public User getUser(long id){
+        return allUsers.get(id);
+    }
+
+    //получаем всех пользователей
+    public List<User> getAllUser(){
+        return List.copyOf(allUsers.values());
+    }
+
+    public void removeUser(long id){
+
     }
 
     private void checkEmail(String email) {
