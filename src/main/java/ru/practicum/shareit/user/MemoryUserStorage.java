@@ -18,7 +18,11 @@ public class MemoryUserStorage implements UserStorage {
     private final Map<Long, User> allUsers = new HashMap<>();
     private final List<String> allEmail = new ArrayList<>();
 
-    //добавление пользователя
+    /**
+     * Добавление пользователя
+     * @param user
+     * @return
+     */
     public User addUser(User user) {
         String email = user.getEmail();
         checkEmail(user.getEmail());
@@ -30,7 +34,12 @@ public class MemoryUserStorage implements UserStorage {
         return allUsers.get(id);
     }
 
-    //Обновление пользователя
+    /**
+     * Обновление пользователя
+     * @param id
+     * @param userData
+     * @return
+     */
     public User updateUser(long id, Map<String, String> userData) {
         checkUser(id);
         checkEmail(userData.get("email"));
@@ -46,21 +55,37 @@ public class MemoryUserStorage implements UserStorage {
         return currentUser;
     }
 
-    //получаем пользователя по id
+    /**
+     * Получаем пользователя по id
+     * @param id
+     * @return
+     */
     public User getUser(long id){
+        checkUser(id);
         return allUsers.get(id);
     }
 
-    //получаем всех пользователей
+    /**
+     * Получаем всех пользователей
+     * @return
+     */
     public List<User> getAllUser(){
         return List.copyOf(allUsers.values());
     }
 
+    /**
+     * Удаляем пользователя
+     * @param id
+     */
     public void removeUser(long id){
         allEmail.remove(allUsers.get(id).getEmail());
         allUsers.remove(id);
     }
 
+    /**
+     * Проверка почты на наличие, если есть выбрасывается исключение
+     * @param email
+     */
     private void checkEmail(String email) {
         if (allEmail.contains(email)) {
             log.info("Пользователь с такой почтой уже существует");
@@ -69,6 +94,10 @@ public class MemoryUserStorage implements UserStorage {
         }
     }
 
+    /**
+     * Проверка пользователя на наличие, если отсутствует выбрасывается исключение
+     * @param id
+     */
     private void checkUser(Long id){
         if(!allUsers.containsKey(id)){
             log.info("Пользователь с таким id отсутствует в базе");

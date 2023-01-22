@@ -17,33 +17,52 @@ import java.util.Map;
 public class UserController {
     private final UserService userService;
 
-    //Добавляем пользователя
+    /**
+     * Добавляем пользователя
+     * @param user
+     * @return
+     */
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
         return userService.addUser(user);
     }
 
-    //Обновляем пользователя
+    /**
+     * Обновляем пользователя
+     * @param userData
+     * @param id
+     * @return
+     */
     @PatchMapping("{id}")
-    public User update(@Valid @RequestBody Map<String, String> userData, @PathVariable("id") Long id){
+    public User update(@Valid @RequestBody Map<String, String> userData, @PathVariable("id") Long id) {
         return userService.updateUser(id, userData);
     }
 
-    //получаем пользователя по id
+    /**
+     * Получаем пользователя по id
+     * @param id
+     * @return
+     */
     @GetMapping("{id}")
-    public User getUser(@PathVariable("id") Long id){
+    public User getUser(@PathVariable("id") Long id) {
         return userService.getUser(id);
     }
 
-    //получаем всех пользователей
+    /**
+     * Получаем всех пользователей
+     * @return
+     */
     @GetMapping
-    public List<User> getAllUser(){
+    public List<User> getAllUser() {
         return userService.getAllUser();
     }
 
-    //Удаляем пользователя
+    /**
+     * Удаляем пользователя
+     * @param id
+     */
     @DeleteMapping("{id}")
-    public void removeUser(@PathVariable("id") Long id){
+    public void removeUser(@PathVariable("id") Long id) {
         userService.removeUser(id);
     }
 }

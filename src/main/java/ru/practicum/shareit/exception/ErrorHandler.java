@@ -22,6 +22,18 @@ public class ErrorHandler {
         return new ErrorResponse(String.format("Почта не уникальна"));
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleItemNotFoundException(final ItemNotFoundException e) {
+        return new ErrorResponse(String.format("Вещь отсутствует"));
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleItemNotCreatedByUserException(final ItemNotCreatedByUserException e) {
+        return new ErrorResponse(String.format("Вещь создана другим пользователем"));
+    }
+
     /*@ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleUserValidationException(final ValidationException e) {
