@@ -18,8 +18,6 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    private final String HEADERS = "x-sharer-user-id";
-
     /**
      * Добавляем вещь
      *
@@ -29,7 +27,7 @@ public class ItemController {
      */
     @PostMapping
     public Item addItem(@Valid @RequestBody Item item, @RequestHeader Map<String, String> headers) {
-        String stringIdUserOwner1 = headers.get(HEADERS);
+        String stringIdUserOwner1 = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner1);
         return itemService.addItem(item, idUserOwner);
     }
@@ -44,7 +42,7 @@ public class ItemController {
      */
     @PatchMapping("{id}")
     public Item updateItem(@Valid @RequestBody Map<String, String> itemData, @PathVariable("id") Long id, @RequestHeader Map<String, String> headers) {
-        String stringIdUserOwner1 = headers.get(HEADERS);
+        String stringIdUserOwner1 = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner1);
         return itemService.updateItem(id, itemData, idUserOwner);
     }
@@ -73,7 +71,7 @@ public class ItemController {
         if (headers == null && text == null) {
             return itemService.getAllItem();
         } else {
-            String stringIdUserOwner = headers.get(HEADERS);
+            String stringIdUserOwner = headers.get("x-sharer-user-id");
             long idUserOwner = Long.parseLong(stringIdUserOwner);
             return itemService.getAllItemsUser(idUserOwner);
         }
@@ -89,7 +87,7 @@ public class ItemController {
     @GetMapping({"/search"})
     public List<ItemDto> searchItem(@RequestHeader Map<String, String> headers,
                                     @RequestParam String text) {
-        String stringIdUserOwner = headers.get(HEADERS);
+        String stringIdUserOwner = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner);
         return itemService.searchItem(idUserOwner, text.toLowerCase());
     }
