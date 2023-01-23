@@ -3,6 +3,7 @@ package ru.practicum.shareit.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,17 +20,20 @@ public class UserService {
         return userStorage.updateUser(id, userData);
     }
 
-    public User getUser(long id) {
-        return userStorage.getUser(id);
+    public UserDto getUser(long id) {
+        return UserMapper.userDto(userStorage.getUser(id));
     }
 
-    public List<User> getAllUser() {
-        return userStorage.getAllUser();
+    public List<UserDto> getAllUser() {
+        List<User> userList = userStorage.getAllUser();
+        List<UserDto> userDtoList = new ArrayList<>();
+        for (User user : userList) {
+            userDtoList.add(UserMapper.userDto(user));
+        }
+        return userDtoList;
     }
 
     public void removeUser(long id) {
         userStorage.removeUser(id);
     }
-
-
 }

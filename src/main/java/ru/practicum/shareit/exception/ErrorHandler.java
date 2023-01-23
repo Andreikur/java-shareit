@@ -34,49 +34,6 @@ public class ErrorHandler {
         return new ErrorResponse(String.format("Вещь создана другим пользователем"));
     }
 
-    /*@ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleUserValidationException(final ValidationException e) {
-        return new ErrorResponse(String.format("Ошибка валидации"));
-    }*/
-
-    /*@ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleFilmNotFoundException(final FilmNotFoundException e) {
-        return new ErrorResponse(String.format("Фильм отсутствует"));
-    }*/
-
-    /*@ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleMpaNotFoundException(final MpaNotFoundException e) {
-        return new ErrorResponse(String.format("MPA отсутствует"));
-    }*/
-
-    /*@ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleGenreNotFoundException(final GenreNotFoundException e) {
-        return new ErrorResponse(String.format("Жанр отсутствует"));
-    }*/
-
-    /*@ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleReviewNotFoundException(final ReviewNotFoundException e) {
-        return new ErrorResponse(e.getMessage());
-    }*/
-
-    /*@ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleGenreNotFoundException(final DirectorNotFoundException e) {
-        return new ErrorResponse(String.format("Режисер отсутствует отсутствует"));
-    }*/
-
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public ErrorResponse handleException(final Exception e) {
-//        log.info("{500}", e.getMessage(), e);
-//        return new ErrorResponse(e.getMessage());
-//    }
-
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleException(final Exception e) {

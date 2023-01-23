@@ -19,6 +19,7 @@ public class UserController {
 
     /**
      * Добавляем пользователя
+     *
      * @param user
      * @return
      */
@@ -29,6 +30,7 @@ public class UserController {
 
     /**
      * Обновляем пользователя
+     *
      * @param userData
      * @param id
      * @return
@@ -40,25 +42,28 @@ public class UserController {
 
     /**
      * Получаем пользователя по id
+     *
      * @param id
      * @return
      */
     @GetMapping("{id}")
-    public User getUser(@PathVariable("id") Long id) {
+    public UserDto getUser(@PathVariable("id") Long id) {
         return userService.getUser(id);
     }
 
     /**
      * Получаем всех пользователей
+     *
      * @return
      */
     @GetMapping
-    public List<User> getAllUser() {
+    public List<UserDto> getAllUser() {
         return userService.getAllUser();
     }
 
     /**
      * Удаляем пользователя
+     *
      * @param id
      */
     @DeleteMapping("{id}")

@@ -20,6 +20,7 @@ public class MemoryUserStorage implements UserStorage {
 
     /**
      * Добавление пользователя
+     *
      * @param user
      * @return
      */
@@ -36,6 +37,7 @@ public class MemoryUserStorage implements UserStorage {
 
     /**
      * Обновление пользователя
+     *
      * @param id
      * @param userData
      * @return
@@ -44,12 +46,12 @@ public class MemoryUserStorage implements UserStorage {
         checkUser(id);
         checkEmail(userData.get("email"));
         User currentUser = allUsers.get(id);
-        if(userData.containsKey("email")) {
+        if (userData.containsKey("email")) {
             allEmail.remove(currentUser.getEmail());
             currentUser.setEmail(userData.get("email"));
             allEmail.add(currentUser.getEmail());
         }
-        if(userData.containsKey("name")) {
+        if (userData.containsKey("name")) {
             currentUser.setName(userData.get("name"));
         }
         return currentUser;
@@ -57,33 +59,37 @@ public class MemoryUserStorage implements UserStorage {
 
     /**
      * Получаем пользователя по id
+     *
      * @param id
      * @return
      */
-    public User getUser(long id){
+    public User getUser(long id) {
         checkUser(id);
         return allUsers.get(id);
     }
 
     /**
      * Получаем всех пользователей
+     *
      * @return
      */
-    public List<User> getAllUser(){
+    public List<User> getAllUser() {
         return List.copyOf(allUsers.values());
     }
 
     /**
      * Удаляем пользователя
+     *
      * @param id
      */
-    public void removeUser(long id){
+    public void removeUser(long id) {
         allEmail.remove(allUsers.get(id).getEmail());
         allUsers.remove(id);
     }
 
     /**
      * Проверка почты на наличие, если есть выбрасывается исключение
+     *
      * @param email
      */
     private void checkEmail(String email) {
@@ -96,10 +102,11 @@ public class MemoryUserStorage implements UserStorage {
 
     /**
      * Проверка пользователя на наличие, если отсутствует выбрасывается исключение
+     *
      * @param id
      */
-    private void checkUser(Long id){
-        if(!allUsers.containsKey(id)){
+    private void checkUser(Long id) {
+        if (!allUsers.containsKey(id)) {
             log.info("Пользователь с таким id отсутствует в базе");
             throw new UserNotFoundException(String.format(
                     "Пользователь с id отсутствует в базе", id));

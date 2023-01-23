@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.exception.ItemNotCreatedByUserException;
 import ru.practicum.shareit.exception.ItemNotFoundException;
-import ru.practicum.shareit.exception.UserNotFoundException;
-import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserStorage;
 
 import java.util.ArrayList;
@@ -23,7 +21,15 @@ public class MemoryItemStorage implements ItemStorage {
     private final Map<Long, Item> allItem = new HashMap<>();
     private final UserStorage userStorage;
 
-    public Item addItem(Item item, long idUserOwner){
+
+    /**
+     * Добавляем вещь
+     *
+     * @param item
+     * @param idUserOwner
+     * @return
+     */
+    public Item addItem(Item item, long idUserOwner) {
         userStorage.getUser(idUserOwner);
         item.setOwner(idUserOwner);
         id++;
@@ -33,21 +39,29 @@ public class MemoryItemStorage implements ItemStorage {
         return allItem.get(id);
     }
 
-    public Item updateItem(long id, Map<String, String> itemData, long idUserOwner){
+    /**
+     * Обновляем вещь
+     *
+     * @param id
+     * @param itemData
+     * @param idUserOwner
+     * @return
+     */
+    public Item updateItem(long id, Map<String, String> itemData, long idUserOwner) {
         checkItem(id);
         Item currentItem = allItem.get(id);
-        if (currentItem.getOwner() != idUserOwner){
+        if (currentItem.getOwner() != idUserOwner) {
             log.info("Вещь создана другим пользователем");
             throw new ItemNotCreatedByUserException(String.format(
                     "Вещь создана другим пользователем"));
         }
-        if(itemData.containsKey("name")) {
+        if (itemData.containsKey("name")) {
             currentItem.setName(itemData.get("name"));
         }
-        if(itemData.containsKey("description")) {
+        if (itemData.containsKey("description")) {
             currentItem.setDescription(itemData.get("description"));
         }
-        if(itemData.containsKey("available")) {
+        if (itemData.containsKey("available")) {
             currentItem.setAvailable(Boolean.parseBoolean(itemData.get("available")));
         }
         return currentItem;
@@ -55,44 +69,53 @@ public class MemoryItemStorage implements ItemStorage {
 
     /**
      * Получаем вещь по Id
+     *
      * @param id
      * @return
      */
-    public Item getItem(long id){
+    public Item getItem(long id) {
         checkItem(id);
         return allItem.get(id);
     }
 
     /**
      * Получаем список всех вещей
+     *
      * @return
      */
-    public List<Item> getAllItem(){
+    public List<Item> getAllItem() {
         return List.copyOf(allItem.values());
     }
 
     /**
      * Получаем список всех вещей пользователя
+     *
      * @param idUserOwner
      * @return
      */
-    public List<Item> getAllItemsUser(long idUserOwner){
+    public List<Item> getAllItemsUser(long idUserOwner) {
         List<Item> itemList = new ArrayList<>();
-        for (Item curItem : allItem.values()){
-            if(curItem.getOwner() == idUserOwner){
+        for (Item curItem : allItem.values()) {
+            if (curItem.getOwner() == idUserOwner) {
                 itemList.add(curItem);
             }
         }
         return itemList;
     }
 
-    public List<Item> searchItem(long idUserOwner, String text){
+    /**
+     * Поиск вещей по описанию
+     * @param idUserOwner
+     * @param text
+     * @return
+     */
+    public List<Item> searchItem(long idUserOwner, String text) {
         List<Item> itemList = new ArrayList<>();
-        if(text.isBlank()){
+        if (text.isBlank()) {
             return itemList;
         }
-        for (Item curItem : allItem.values()){
-            if(curItem.getDescription().toLowerCase().contains(text) && curItem.getAvailable()){
+        for (Item curItem : allItem.values()) {
+            if (curItem.getDescription().toLowerCase().contains(text) && curItem.getAvailable()) {
                 itemList.add(curItem);
             }
         }
@@ -101,14 +124,14 @@ public class MemoryItemStorage implements ItemStorage {
 
     /**
      * Проверка вещи на наличие, если отсутствует выбрасывается исключение
+     *
      * @param id
      */
-    private void checkItem(Long id){
-        if(!allItem.containsKey(id)){
+    private void checkItem(Long id) {
+        if (!allItem.containsKey(id)) {
             log.info("Вещь с таким id отсутствует в базе");
             throw new ItemNotFoundException(String.format(
                     "Вещь с id отсутствует в базе", id));
         }
     }
-
 }
