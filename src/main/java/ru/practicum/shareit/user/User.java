@@ -11,7 +11,6 @@ import javax.validation.constraints.NotEmpty;
  */
 
 @Data
-@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {

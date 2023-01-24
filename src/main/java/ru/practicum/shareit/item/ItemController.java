@@ -70,11 +70,10 @@ public class ItemController {
                                     @RequestParam(required = false) String text) {
         if (headers == null && text == null) {
             return itemService.getAllItem();
-        } else {
-            String stringIdUserOwner = headers.get("x-sharer-user-id");
-            long idUserOwner = Long.parseLong(stringIdUserOwner);
-            return itemService.getAllItemsUser(idUserOwner);
         }
+        String stringIdUserOwner = headers.get("x-sharer-user-id");
+        long idUserOwner = Long.parseLong(stringIdUserOwner);
+        return itemService.getAllItemsUser(idUserOwner);
     }
 
     /**

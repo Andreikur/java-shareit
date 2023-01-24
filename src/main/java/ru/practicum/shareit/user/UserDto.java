@@ -7,7 +7,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 @Data
-@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {

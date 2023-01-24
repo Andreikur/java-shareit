@@ -21,14 +21,14 @@ public class UserService {
     }
 
     public UserDto getUser(long id) {
-        return UserMapper.userDto(userStorage.getUser(id));
+        return UserMapper.toUserDto(userStorage.getUser(id));
     }
 
     public List<UserDto> getAllUser() {
         List<User> userList = userStorage.getAllUser();
         List<UserDto> userDtoList = new ArrayList<>();
         for (User user : userList) {
-            userDtoList.add(UserMapper.userDto(user));
+            userDtoList.add(UserMapper.toUserDto(user));
         }
         return userDtoList;
     }

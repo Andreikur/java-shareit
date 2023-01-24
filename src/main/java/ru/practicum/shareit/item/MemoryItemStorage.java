@@ -30,8 +30,8 @@ public class MemoryItemStorage implements ItemStorage {
      * @return
      */
     public Item addItem(Item item, long idUserOwner) {
-        userStorage.getUser(idUserOwner);
-        item.setOwner(idUserOwner);
+        //userStorage.getUser(idUserOwner);
+        item.setOwner(userStorage.getUser(idUserOwner));
         id++;
         item.setId(id);
         allItem.put(id, item);
@@ -50,7 +50,7 @@ public class MemoryItemStorage implements ItemStorage {
     public Item updateItem(long id, Map<String, String> itemData, long idUserOwner) {
         checkItem(id);
         Item currentItem = allItem.get(id);
-        if (currentItem.getOwner() != idUserOwner) {
+        if (currentItem.getOwner().getId() != idUserOwner) {
             log.info("Вещь создана другим пользователем");
             throw new ItemNotCreatedByUserException(String.format(
                     "Вещь создана другим пользователем"));
@@ -96,7 +96,7 @@ public class MemoryItemStorage implements ItemStorage {
     public List<Item> getAllItemsUser(long idUserOwner) {
         List<Item> itemList = new ArrayList<>();
         for (Item curItem : allItem.values()) {
-            if (curItem.getOwner() == idUserOwner) {
+            if (curItem.getOwner().getId() == idUserOwner) {
                 itemList.add(curItem);
             }
         }
