@@ -1,6 +1,10 @@
 package ru.practicum.shareit.item;
 
 public final class ItemMapper {
+
+    private ItemMapper() {
+    }
+
     public static ItemDto toItemDto(Item item) {
         return new ItemDto(
                 item.getId(),
