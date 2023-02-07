@@ -24,7 +24,7 @@ public class UserController {
      * @return
      */
     @PostMapping
-    public User addUser(@Valid @RequestBody User user) {
+    public UserDto addUser(@Valid @RequestBody UserDto user) {
         return userService.addUser(user);
     }
 
@@ -36,7 +36,7 @@ public class UserController {
      * @return
      */
     @PatchMapping("{id}")
-    public User update(@Valid @RequestBody Map<String, String> userData, @PathVariable("id") Long id) {
+    public UserDto update(@Valid @RequestBody Map<String, String> userData, @PathVariable("id") Long id) {
         return userService.updateUser(id, userData);
     }
 
@@ -46,28 +46,28 @@ public class UserController {
      * @param id
      * @return
      */
-    @GetMapping("{id}")
+    /*@GetMapping("{id}")
     public UserDto getUser(@PathVariable("id") Long id) {
         return userService.getUser(id);
-    }
+    }*/
 
     /**
      * Получаем всех пользователей
      *
      * @return
      */
-    @GetMapping
+    /*@GetMapping
     public List<UserDto> getAllUser() {
         return userService.getAllUser();
-    }
+    }*/
 
     /**
      * Удаляем пользователя
      *
      * @param id
      */
-    @DeleteMapping("{id}")
+    /*@DeleteMapping("{id}")
     public void removeUser(@PathVariable("id") Long id) {
         userService.removeUser(id);
-    }
+    }*/
 }

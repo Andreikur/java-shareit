@@ -2,6 +2,7 @@ package ru.practicum.shareit.user;
 
 import lombok.*;
 
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -10,16 +11,24 @@ import javax.validation.constraints.NotEmpty;
  * TODO Sprint add-controllers.
  */
 
+@Entity
+@Table(name = "users", schema = "public")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
+
+    @Id
+    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NonNull
+    //@NonNull
     @NotEmpty
     @Email(regexp = "[A-Za-z0-9._%-+]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}", message = "Пожалуйста укажите дейтвительный адрес")
+    @Column(name = "email", nullable = false)
     private String email;
-    @NonNull
+    //@NonNull
     @NotBlank
+    @Column(name = "user_name", nullable = false)
     private String name;
 }

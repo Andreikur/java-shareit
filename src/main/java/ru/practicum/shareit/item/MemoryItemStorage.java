@@ -19,7 +19,7 @@ public class MemoryItemStorage implements ItemStorage {
 
     private long id;
     private final Map<Long, Item> allItem = new HashMap<>();
-    private final UserStorage userStorage;
+    //private final UserStorage userStorage;
 
 
     /**
@@ -31,7 +31,7 @@ public class MemoryItemStorage implements ItemStorage {
      */
     public Item addItem(Item item, long idUserOwner) {
         //userStorage.getUser(idUserOwner);
-        item.setOwner(userStorage.getUser(idUserOwner));
+        //item.setOwner(userStorage.getUser(idUserOwner));
         id++;
         item.setId(id);
         allItem.put(id, item);
