@@ -1,53 +1,19 @@
 package ru.practicum.shareit.item;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Service
-@RequiredArgsConstructor
-public class ItemService {
-    private final ItemStorage itemStorage;
+public interface ItemService {
+    ItemDto addItem(ItemDto itemDto, long idUserOwner);
 
-    public Item addItem(Item item, long idUserOwner) {
-        return itemStorage.addItem(item, idUserOwner);
-    }
+    ItemDto updateItem(long id, Map<String, String> itemData, long idUserOwner);
 
-    public Item updateItem(long id, Map<String, String> itemDAta, long idUserOwner) {
-        return itemStorage.updateItem(id, itemDAta, idUserOwner);
-    }
+    ItemDto getItem(long id);
 
-    public ItemDto getItem(long id) {
-        return ItemMapper.toItemDto(itemStorage.getItem(id));
-    }
+    List<ItemDto> getAllItem();
 
-    public List<ItemDto> getAllItem() {
-        List<Item> itemList = itemStorage.getAllItem();
-        List<ItemDto> itemDtoList = new ArrayList<>();
-        for (Item item : itemList) {
-            itemDtoList.add(ItemMapper.toItemDto(item));
-        }
-        return itemDtoList;
-    }
+    //List<ItemDto> getAllItemsUser(long idUserOwner);
 
-    public List<ItemDto> getAllItemsUser(long idUserOwner) {
-        List<Item> itemList = itemStorage.getAllItemsUser(idUserOwner);
-        List<ItemDto> itemDtoList = new ArrayList<>();
-        for (Item item : itemList) {
-            itemDtoList.add(ItemMapper.toItemDto(item));
-        }
-        return itemDtoList;
-    }
+    //List<ItemDto> searchItem(long idUserOwner, String text);
 
-    public List<ItemDto> searchItem(long idUserOwner, String text) {
-        List<Item> itemList = itemStorage.searchItem(idUserOwner, text);
-        List<ItemDto> itemDtoList = new ArrayList<>();
-        for (Item item : itemList) {
-            itemDtoList.add(ItemMapper.toItemDto(item));
-        }
-        return itemDtoList;
-    }
 }

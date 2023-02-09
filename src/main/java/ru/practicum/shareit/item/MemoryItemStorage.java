@@ -1,3 +1,4 @@
+/*
 package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
@@ -5,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.exception.ItemNotCreatedByUserException;
 import ru.practicum.shareit.exception.ItemNotFoundException;
-import ru.practicum.shareit.user.UserStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,20 +15,22 @@ import java.util.Map;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class MemoryItemStorage implements ItemStorage {
+public class MemoryItemStorage implements ItemService {
 
     private long id;
     private final Map<Long, Item> allItem = new HashMap<>();
     //private final UserStorage userStorage;
 
 
-    /**
+    */
+/**
      * Добавляем вещь
      *
      * @param item
      * @param idUserOwner
      * @return
-     */
+     *//*
+
     public Item addItem(Item item, long idUserOwner) {
         //userStorage.getUser(idUserOwner);
         //item.setOwner(userStorage.getUser(idUserOwner));
@@ -39,14 +41,16 @@ public class MemoryItemStorage implements ItemStorage {
         return allItem.get(id);
     }
 
-    /**
+    */
+/**
      * Обновляем вещь
      *
      * @param id
      * @param itemData
      * @param idUserOwner
      * @return
-     */
+     *//*
+
     public Item updateItem(long id, Map<String, String> itemData, long idUserOwner) {
         checkItem(id);
         Item currentItem = allItem.get(id);
@@ -67,32 +71,38 @@ public class MemoryItemStorage implements ItemStorage {
         return currentItem;
     }
 
-    /**
+    */
+/**
      * Получаем вещь по Id
      *
      * @param id
      * @return
-     */
+     *//*
+
     public Item getItem(long id) {
         checkItem(id);
         return allItem.get(id);
     }
 
-    /**
+    */
+/**
      * Получаем список всех вещей
      *
      * @return
-     */
+     *//*
+
     public List<Item> getAllItem() {
         return List.copyOf(allItem.values());
     }
 
-    /**
+    */
+/**
      * Получаем список всех вещей пользователя
      *
      * @param idUserOwner
      * @return
-     */
+     *//*
+
     public List<Item> getAllItemsUser(long idUserOwner) {
         List<Item> itemList = new ArrayList<>();
         for (Item curItem : allItem.values()) {
@@ -103,12 +113,14 @@ public class MemoryItemStorage implements ItemStorage {
         return itemList;
     }
 
-    /**
+    */
+/**
      * Поиск вещей по описанию
      * @param idUserOwner
      * @param text
      * @return
-     */
+     *//*
+
     public List<Item> searchItem(long idUserOwner, String text) {
         List<Item> itemList = new ArrayList<>();
         if (text.isBlank()) {
@@ -122,11 +134,13 @@ public class MemoryItemStorage implements ItemStorage {
         return itemList;
     }
 
-    /**
+    */
+/**
      * Проверка вещи на наличие, если отсутствует выбрасывается исключение
      *
      * @param id
-     */
+     *//*
+
     private void checkItem(Long id) {
         if (!allItem.containsKey(id)) {
             log.info("Вещь с таким id отсутствует в базе");
@@ -135,3 +149,4 @@ public class MemoryItemStorage implements ItemStorage {
         }
     }
 }
+*/

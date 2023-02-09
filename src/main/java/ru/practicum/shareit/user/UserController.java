@@ -2,6 +2,7 @@ package ru.practicum.shareit.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.exception.MailNotUniqueException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -46,28 +47,28 @@ public class UserController {
      * @param id
      * @return
      */
-    /*@GetMapping("{id}")
+    @GetMapping("{id}")
     public UserDto getUser(@PathVariable("id") Long id) {
         return userService.getUser(id);
-    }*/
+    }
 
     /**
      * Получаем всех пользователей
      *
      * @return
      */
-    /*@GetMapping
+    @GetMapping
     public List<UserDto> getAllUser() {
         return userService.getAllUser();
-    }*/
+    }
 
     /**
      * Удаляем пользователя
      *
      * @param id
      */
-    /*@DeleteMapping("{id}")
+    @DeleteMapping("{id}")
     public void removeUser(@PathVariable("id") Long id) {
         userService.removeUser(id);
-    }*/
+    }
 }
