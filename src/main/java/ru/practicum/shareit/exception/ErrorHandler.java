@@ -42,6 +42,25 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleBookingNotCreatedByUserException(final BookingNotCreatedByUserException e) {
+        return new ErrorResponse(String.format("Бронирование не может быть выполнено этим пользователем"));
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleBookingNotFoundException(final BookingNotFoundException e) {
+        return new ErrorResponse(String.format("Бронь с таким id не найдена"));
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleBookingAvailableException(final BookingAvailableException e) {
+        log.info("{400}", e.getMessage(), e);
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleException(final Exception e) {
         log.info("{400}", e.getMessage(), e);
