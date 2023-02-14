@@ -21,5 +21,11 @@ public class BookingDto {
     private LocalDateTime end;
     private Item item;
     private User booker; //пользователь который осуществил бронирование
-    private StatusBooking status = StatusBooking.WAITING;
+    private StatusBooking status;
+
+    public BookingDto(long id, LocalDateTime start, LocalDateTime end) {
+        this.id = id;
+        this.start = start;
+        this.end = end;
+    }
 }

@@ -1,9 +1,6 @@
 package ru.practicum.shareit.booking.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
@@ -37,18 +34,17 @@ public class Booking {
     private LocalDateTime end;
 
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "item_id")
-    //@Column(name = "item_id", nullable = false)
     private Item item;
 
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "booker_id")
-    //@Column(name = "booker_id")
     private User booker; //пользователь который осуществил бронирование
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private StatusBooking status = StatusBooking.WAITING;
+    private StatusBooking status;
 
 }

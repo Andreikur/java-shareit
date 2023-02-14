@@ -29,7 +29,7 @@ CREATE TABLE  IF NOT EXISTS bookings
     end_date TIMESTAMP WITHOUT TIME ZONE CHECK (end_date > NOW()),
     item_id  BIGINT REFERENCES items (id) ON DELETE CASCADE,
     booker_id BIGINT REFERENCES users (id) ON DELETE CASCADE,
-    status CHARACTER VARYING(10)
+    status VARCHAR
 );
 
 CREATE TABLE  IF NOT EXISTS requests

@@ -23,9 +23,9 @@ public class BookingController {
     @PostMapping
     public BookingDto addBooking(@Valid @RequestBody BookingDtoShort bookingDtoShort,
                                       @RequestHeader Map<String, String> headers){
-        String stringIdUserOwner = headers.get("x-sharer-user-id");
-        long idUserOwner = Long.parseLong(stringIdUserOwner);
-        return bookingService.addBooking(bookingDtoShort, idUserOwner);
+        String stringIdUserBooker = headers.get("x-sharer-user-id");
+        long idUserBooker = Long.parseLong(stringIdUserBooker);
+        return bookingService.addBooking(bookingDtoShort, idUserBooker);
     }
 
     @PatchMapping("{bookingId}")
@@ -38,15 +38,58 @@ public class BookingController {
         return bookingService.updateApproved(bookingId, idUserOwner,approvedBoolean);
     }
 
+    /**
+     * Получение данных о конкретном бронировании (выполняется автором или владельцем вещи)
+     * @param id
+     * @param headers
+     * @return
+     */
+
     @GetMapping("{id}")
     public BookingDto getBooking(@PathVariable("id") Long id, @RequestHeader Map<String, String> headers) {
-        String stringIdUserOwner = headers.get("x-sharer-user-id");
-        long idUserOwner = Long.parseLong(stringIdUserOwner);
-        return bookingService.getBooking(id, idUserOwner);
+        String stringIdUser = headers.get("x-sharer-user-id");
+        long idUser = Long.parseLong(stringIdUser);
+        return bookingService.getBooking(id, idUser);
     }
 
+    /**
+     * Получение списка всех бронирований текущего пользователя
+     * Параметр {state}:    ALL - все
+     *                      CURRENT - текущее
+     *                      PAST - завершенное
+     *                      FUTURE - будущее
+     *                      WAITING - ожидающее потверждение
+     *                      REJECT - отклоненный
+     * отсортировано по дате от наиболее новых к наиболее старым
+     * @param headers
+     * @return
+     */
+
     @GetMapping
-    public List<BookingDto> getAllUser() {
-        return bookingService.getAllBooking();
+    public List<BookingDto> getAllBooking(@RequestHeader Map<String, String> headers) {
+        String stringIdUserOwner = headers.get("x-sharer-user-id");
+        long idUserOwner = Long.parseLong(stringIdUserOwner);
+        return bookingService.getAllBooking(idUserOwner);
+    }
+
+    /**
+     * получение списка бронирования для всех вещей текущего пользователя
+     Параметр {state}:    ALL - все
+     *                      CURRENT - текущее
+     *                      PAST - завершенное
+     *                      FUTURE - будущее
+     *                      WAITING - ожидающее потверждение
+     *                      REJECT - отклоненный
+     * отсортировано по дате
+     * @param headers
+     * @return
+     */
+
+
+    @GetMapping({"/owner"})
+    public List<BookingDto> getAllBookingOwner(@RequestHeader Map<String, String> headers) {
+        String stringIdUserOwner = headers.get("x-sharer-user-id");
+        long idUserOwner = Long.parseLong(stringIdUserOwner);
+        return bookingService.getAllBookingOwner(idUserOwner);
     }
 }

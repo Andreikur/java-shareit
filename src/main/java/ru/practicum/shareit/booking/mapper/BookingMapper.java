@@ -42,14 +42,11 @@ public class BookingMapper {
         );
     }
 
-    public static Booking toBooking(BookingDtoShort bookingDtoShort){
-        return new Booking(
+    public static BookingDto toBookingTdo(BookingDtoShort bookingDtoShort){
+        return new BookingDto(
                 bookingDtoShort.getId(),
                 bookingDtoShort.getStart(),
-                bookingDtoShort.getEnd(),
-                null,
-                null,
-                StatusBooking.WAITING
+                bookingDtoShort.getEnd()
         );
     }
 }
