@@ -35,7 +35,7 @@ public class Item {
     private Boolean available = null;
 
     @ToString.Exclude
-    @OneToOne //(fetch = FetchType.LAZY)
+    @ManyToOne //(fetch = FetchType.LAZY)
     private User owner;
     //private ItemRequest request;
 }

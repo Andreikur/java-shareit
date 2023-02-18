@@ -59,17 +59,18 @@ public class BookingController {
      *                      PAST - завершенное
      *                      FUTURE - будущее
      *                      WAITING - ожидающее потверждение
-     *                      REJECT - отклоненный
+     *                      REJECTED - отклоненный
      * отсортировано по дате от наиболее новых к наиболее старым
      * @param headers
      * @return
      */
 
     @GetMapping
-    public List<BookingDto> getAllBooking(@RequestHeader Map<String, String> headers) {
+    public List<BookingDto> getAllBooking(@RequestHeader Map<String, String> headers,
+                                          @RequestParam(defaultValue = "ALL") String state) {
         String stringIdUserOwner = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner);
-        return bookingService.getAllBooking(idUserOwner);
+        return bookingService.getAllBooking(idUserOwner, state);
     }
 
     /**
@@ -79,17 +80,17 @@ public class BookingController {
      *                      PAST - завершенное
      *                      FUTURE - будущее
      *                      WAITING - ожидающее потверждение
-     *                      REJECT - отклоненный
+     *                      REJECTED - отклоненный
      * отсортировано по дате
      * @param headers
      * @return
      */
 
-
     @GetMapping({"/owner"})
-    public List<BookingDto> getAllBookingOwner(@RequestHeader Map<String, String> headers) {
+    public List<BookingDto> getAllBookingOwner(@RequestHeader Map<String, String> headers,
+                                               @RequestParam(defaultValue = "ALL") String state) {
         String stringIdUserOwner = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner);
-        return bookingService.getAllBookingOwner(idUserOwner);
+        return bookingService.getAllBookingOwner(idUserOwner, state);
     }
 }

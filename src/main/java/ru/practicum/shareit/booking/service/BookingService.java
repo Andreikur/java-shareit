@@ -10,6 +10,6 @@ public interface BookingService {
     BookingDto addBooking(BookingDtoShort bookingDtoShort, Long idUserBooker);
     BookingDto updateApproved(long bookingId, long idUserOwner, boolean approved);
     BookingDto getBooking(long id, long idUser);
-    List<BookingDto> getAllBooking(Long idUserOwner);
-    List<BookingDto> getAllBookingOwner(Long idUserOwner);
+    List<BookingDto> getAllBooking(Long idUserOwner, String state);
+    List<BookingDto> getAllBookingOwner(Long idUserOwner, String state);
 }

@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.comment.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
 
@@ -28,7 +29,8 @@ public class ItemController {
      * @return
      */
     @PostMapping
-    public ItemDto addItem(@Valid @RequestBody ItemDto item, @RequestHeader Map<String, String> headers) {
+    public ItemDto addItem(@Valid @RequestBody ItemDto item,
+                           @RequestHeader Map<String, String> headers) {
         String stringIdUserOwner1 = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner1);
         return itemService.addItem(item, idUserOwner);
@@ -43,7 +45,9 @@ public class ItemController {
      * @return
      */
     @PatchMapping("{id}")
-    public ItemDto updateItem(@Valid @RequestBody Map<String, String> itemData, @PathVariable("id") Long id, @RequestHeader Map<String, String> headers) {
+    public ItemDto updateItem(@Valid @RequestBody Map<String, String> itemData,
+                              @PathVariable("id") Long id,
+                              @RequestHeader Map<String, String> headers) {
         String stringIdUserOwner1 = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner1);
         return itemService.updateItem(id, itemData, idUserOwner);
@@ -91,5 +95,14 @@ public class ItemController {
         String stringIdUserOwner = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner);
         return itemService.searchItem(idUserOwner, text.toLowerCase());
+    }
+
+    @PostMapping("/{itemId}/comment")
+    public CommentDto addComment(@Valid @RequestBody CommentDto commentDto,
+                                 @RequestHeader Map<String, String> headers,
+                                 @PathVariable long itemId) {
+        String stringIdUserOwner = headers.get("x-sharer-user-id");
+        long userId = Long.parseLong(stringIdUserOwner);
+        return itemService.addComment(userId, itemId, commentDto);
     }
 }
