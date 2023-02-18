@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.UserNotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.model.mapper.UserMapper;
+import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
@@ -52,8 +52,8 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.findById(id).orElseThrow(() ->
                     new UserNotFoundException(String.format("Пользователь с таким id не найден")));
             return UserMapper.toUserDto(user);
-        } catch (DataIntegrityViolationException e){
-            if(e.getCause() instanceof ConstraintViolationException) {
+        } catch (DataIntegrityViolationException e) {
+            if (e.getCause() instanceof ConstraintViolationException) {
                 throw new UserNotFoundException(String.format(
                         "Пользователь с таким id не найден"));
             }

@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user.model.mapper;
+package ru.practicum.shareit.user.mapper;
 
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.dto.UserDto;
@@ -19,9 +19,9 @@ public final class UserMapper {
         );
     }
 
-    public static List<UserDto> toUserDto (Iterable<User> users){
+    public static List<UserDto> toUserDto(Iterable<User> users) {
         List<UserDto> userDtoList = new ArrayList<>();
-        for (User user : users){
+        for (User user : users) {
             userDtoList.add(toUserDto(user));
         }
         return userDtoList;
