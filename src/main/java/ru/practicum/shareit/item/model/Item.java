@@ -1,7 +1,5 @@
 package ru.practicum.shareit.item.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import ru.practicum.shareit.user.model.User;
 
@@ -19,7 +17,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Item {
-
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,10 +30,8 @@ public class Item {
     @NotNull
     @Column(name = "available", nullable = false)
     private Boolean available = null;
-
     @ToString.Exclude
-    @ManyToOne //(fetch = FetchType.LAZY)
+    @ManyToOne
     private User owner;
-    //private ItemRequest request;
 }
 

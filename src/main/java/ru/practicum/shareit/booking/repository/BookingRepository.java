@@ -1,10 +1,8 @@
 package ru.practicum.shareit.booking.repository;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import ru.practicum.shareit.booking.enums.State;
 import ru.practicum.shareit.booking.enums.StatusBooking;
 import ru.practicum.shareit.booking.model.Booking;
 
@@ -14,8 +12,6 @@ import java.util.Optional;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-
-    List<Booking> findAllByBookerId(long bookerId, Sort sort);
 
     @Query("SELECT b FROM Booking b " +
             "where b.booker.id = ?1 " +
@@ -46,10 +42,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "AND b.status = ?2 " +
             "ORDER BY b.status desc")
     List<Booking> findByBookerAndState(long userId, StatusBooking status);
-
-    //List<Booking> findByBookerAndState(long bookerId, State status, Sort sort);
-
-
 
     @Query("SELECT b from Booking b " +
             "where b.item.owner.id = ?1 " +

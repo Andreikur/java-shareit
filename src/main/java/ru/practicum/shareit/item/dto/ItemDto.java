@@ -23,6 +23,5 @@ public class ItemDto {
     @NotNull
     private Boolean available = null;
     private User owner;
-    //private ItemRequest request;
 }
 

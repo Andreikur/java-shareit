@@ -20,7 +20,7 @@ public class BookingDto {
     private LocalDateTime start;
     private LocalDateTime end;
     private Item item;
-    private User booker; //пользователь который осуществил бронирование
+    private User booker;    //пользователь который осуществил бронирование
     private StatusBooking status;
 
     public BookingDto(long id, LocalDateTime start, LocalDateTime end) {

@@ -26,11 +26,9 @@ public class Booking {
     private long id;
 
     @Column(name = "start_date", nullable = false)
-    //@Future
     private LocalDateTime start;
 
     @Column(name = "end_date", nullable = false)
-    //@Future
     private LocalDateTime end;
 
     @ToString.Exclude

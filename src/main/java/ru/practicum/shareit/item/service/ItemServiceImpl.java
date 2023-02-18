@@ -41,13 +41,9 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     @Override
     public ItemDto addItem(ItemDto itemDto, long idUserOwner) {
-
         User user = userRepository.findById(idUserOwner).orElseThrow(() ->
                 new UserNotFoundException(String.format("Пользователь с таким id не найден")));
-
-
         itemDto.setOwner(user);
-
         Item item = itemRepository.save(ItemMapper.toItem(itemDto));
         return ItemMapper.toItemDto(item);
     }
@@ -57,13 +53,11 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto updateItem(long id, Map<String, String> itemData, long idUserOwner) {
         Item currentItem = itemRepository.findById(id).orElseThrow(() ->
                 new ItemNotFoundException(String.format("Вещь с таким id не найдена")));
-
-        if (currentItem.getOwner().getId() != idUserOwner){
+        if (currentItem.getOwner().getId() != idUserOwner) {
             log.info("Вещь создана другим пользователем");
             throw new ItemNotCreatedByUserException(String.format(
                     "Вещь создана другим пользователем"));
         }
-
         if (itemData.containsKey("name")) {
             currentItem.setName(itemData.get("name"));
         }
@@ -76,17 +70,14 @@ public class ItemServiceImpl implements ItemService {
         return ItemMapper.toItemDto(currentItem);
     }
 
-
-    //!!!!!!!!!!!!!!!!
     @Transactional(readOnly = true)
     public ItemBooking getItem(long userId, long itemId) {
         try {
             Item item = itemRepository.findById(itemId).orElseThrow(() ->
                     new ItemNotFoundException(String.format("Вещь с таким id не найден")));
-            //return ItemMapper.toItemDto(item);
             return setComments(setBookings(userId, item), itemId);
-        } catch (DataIntegrityViolationException e){
-            if(e.getCause() instanceof ConstraintViolationException) {
+        } catch (DataIntegrityViolationException e) {
+            if (e.getCause() instanceof ConstraintViolationException) {
                 throw new ItemNotCreatedByUserException(String.format(
                         "Вещь с таким id не найдена"));
             }
@@ -102,16 +93,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional(readOnly = true)
     public List<ItemBooking> getAllItemsUser(long idUserOwner) {
-       /* List<Item> itemList = itemRepository.findAll();
-        List<ItemDto> itemDtoList = new ArrayList<>();
-
-        items.stream().map(item -> setBookings(null, item)).collect(Collectors.toList());
-
-        for (Item item : itemList) {
-            if (item.getOwner().getId() == idUserOwner) {
-                itemDtoList.add(ItemMapper.toItemDto(item));
-            }
-        }*/
         return itemRepository.findAllByOwnerIdOrderByIdAsc(idUserOwner).stream()
                 .map(item -> setBookings(idUserOwner, item))
                 .collect(Collectors.toList());
@@ -124,26 +105,24 @@ public class ItemServiceImpl implements ItemService {
         }
         List<Item> itemList = itemRepository.findAll();
         for (Item curItem : itemList) {
-            if(curItem.getDescription().toLowerCase().contains(text) && curItem.getAvailable()) {
+            if (curItem.getDescription().toLowerCase().contains(text) && curItem.getAvailable()) {
                 itemDtoList.add(ItemMapper.toItemDto(curItem));
             }
         }
         return itemDtoList;
     }
 
-
-    //!!!!!!!!!
     private ItemBooking setBookings(long userId, Item item) {
         ItemBooking itemBooking = ItemMapper.toItemBooking(item);
         if (item.getOwner().getId() == userId) {
             itemBooking.setLastBooking(
                     bookingRepository.findLastBooking(
-                            item.getId(), LocalDateTime.now(),userId)
+                            item.getId(), LocalDateTime.now(), userId)
                             .map(BookingMapper::toBookingDtoShort).orElse(null));
             itemBooking.setNextBooking(
                     bookingRepository.findNextBooking(
-                            item.getId(), LocalDateTime.now(),userId
-                    ).map(BookingMapper::toBookingDtoShort).orElse(null));
+                            item.getId(), LocalDateTime.now(), userId)
+                            .map(BookingMapper::toBookingDtoShort).orElse(null));
         } else {
             itemBooking.setLastBooking(null);
             itemBooking.setNextBooking(null);
@@ -159,7 +138,6 @@ public class ItemServiceImpl implements ItemService {
         return itemDtoBooking;
     }
 
-
     @Override
     @Transactional
     public CommentDto addComment(long userId, long itemId, CommentDto commentDto) {
@@ -171,10 +149,6 @@ public class ItemServiceImpl implements ItemService {
 
         bookingRepository.findByBookerIdAndItemIdAndEndBefore(userId, itemId, LocalDateTime.now())
                 .orElseThrow(() -> new BookingBadRequestException("Бронирование отсутствует"));
-
-        /*Booking booking = bookingRepository.findById(idBooking).orElseThrow(() ->
-                new BookingNotFoundException(String.format("Бронь с таким id не найдена")));*/
-
         Comment comment = CommentMapper.toComment(user, item, commentDto);
         commentRepository.save(comment);
         return CommentMapper.toCommentDto(comment);

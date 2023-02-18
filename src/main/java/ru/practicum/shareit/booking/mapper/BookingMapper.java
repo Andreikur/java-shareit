@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookingMapper {
-    private BookingMapper(){
+    private BookingMapper() {
     }
 
-    public static BookingDto toBookingDto(Booking booking){
+    public static BookingDto toBookingDto(Booking booking) {
         return new BookingDto(
                 booking.getId(),
                 booking.getStart(),
@@ -22,15 +22,15 @@ public class BookingMapper {
         );
     }
 
-    public static List<BookingDto> toBookingDto (Iterable<Booking> bookings){
+    public static List<BookingDto> toBookingDto(Iterable<Booking> bookings) {
         List<BookingDto> bookingDtoList = new ArrayList<>();
-        for (Booking booking : bookings){
+        for (Booking booking : bookings) {
             bookingDtoList.add(toBookingDto(booking));
         }
         return bookingDtoList;
     }
 
-    public static Booking toBooking(BookingDto bookingDto){
+    public static Booking toBooking(BookingDto bookingDto) {
         return new Booking(
                 bookingDto.getId(),
                 bookingDto.getStart(),
@@ -41,7 +41,7 @@ public class BookingMapper {
         );
     }
 
-    public static BookingDto toBookingDto(BookingDtoShort bookingDtoShort){
+    public static BookingDto toBookingDto(BookingDtoShort bookingDtoShort) {
         return new BookingDto(
                 bookingDtoShort.getId(),
                 bookingDtoShort.getStart(),
@@ -49,7 +49,7 @@ public class BookingMapper {
         );
     }
 
-    public static BookingDtoShort toBookingDtoShort (Booking booking){
+    public static BookingDtoShort toBookingDtoShort(Booking booking) {
         return new BookingDtoShort(
                 booking.getId(),
                 booking.getStart(),

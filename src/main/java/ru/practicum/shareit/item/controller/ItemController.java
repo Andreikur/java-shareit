@@ -55,7 +55,6 @@ public class ItemController {
     }
 
     /**
-     *
      * @param headers
      * @param itemId
      * @return
@@ -76,11 +75,7 @@ public class ItemController {
      * @return
      */
     @GetMapping
-    public List<ItemBooking> getAllItem(@RequestHeader Map<String, String> headers,
-                                    @RequestParam(required = false) String text) {
-        /*if (headers == null && text == null) {
-            return itemService.getAllItem();
-        }*/
+    public List<ItemBooking> getAllItem(@RequestHeader Map<String, String> headers) {
         String stringIdUserOwner = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner);
         return itemService.getAllItemsUser(idUserOwner);

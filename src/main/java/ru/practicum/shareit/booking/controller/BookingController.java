@@ -22,7 +22,7 @@ public class BookingController {
 
     @PostMapping
     public BookingDto addBooking(@Valid @RequestBody BookingDtoShort bookingDtoShort,
-                                      @RequestHeader Map<String, String> headers){
+                                 @RequestHeader Map<String, String> headers) {
         String stringIdUserBooker = headers.get("x-sharer-user-id");
         long idUserBooker = Long.parseLong(stringIdUserBooker);
         return bookingService.addBooking(bookingDtoShort, idUserBooker);
@@ -30,23 +30,25 @@ public class BookingController {
 
     @PatchMapping("{bookingId}")
     public BookingDto updateApproved(@PathVariable("bookingId") Long bookingId,
-                                    @RequestHeader Map<String, String> headers,
-                                    @RequestParam String approved) {
+                                     @RequestHeader Map<String, String> headers,
+                                     @RequestParam String approved) {
         String stringIdUserOwner = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner);
         boolean approvedBoolean = Boolean.parseBoolean(approved);
-        return bookingService.updateApproved(bookingId, idUserOwner,approvedBoolean);
+        return bookingService.updateApproved(bookingId, idUserOwner, approvedBoolean);
     }
 
     /**
      * Получение данных о конкретном бронировании (выполняется автором или владельцем вещи)
+     *
      * @param id
      * @param headers
      * @return
      */
 
     @GetMapping("{id}")
-    public BookingDto getBooking(@PathVariable("id") Long id, @RequestHeader Map<String, String> headers) {
+    public BookingDto getBooking(@PathVariable("id") Long id,
+                                 @RequestHeader Map<String, String> headers) {
         String stringIdUser = headers.get("x-sharer-user-id");
         long idUser = Long.parseLong(stringIdUser);
         return bookingService.getBooking(id, idUser);
@@ -55,12 +57,13 @@ public class BookingController {
     /**
      * Получение списка всех бронирований текущего пользователя
      * Параметр {state}:    ALL - все
-     *                      CURRENT - текущее
-     *                      PAST - завершенное
-     *                      FUTURE - будущее
-     *                      WAITING - ожидающее потверждение
-     *                      REJECTED - отклоненный
+     * CURRENT - текущее
+     * PAST - завершенное
+     * FUTURE - будущее
+     * WAITING - ожидающее потверждение
+     * REJECTED - отклоненный
      * отсортировано по дате от наиболее новых к наиболее старым
+     *
      * @param headers
      * @return
      */
@@ -75,13 +78,14 @@ public class BookingController {
 
     /**
      * получение списка бронирования для всех вещей текущего пользователя
-     Параметр {state}:    ALL - все
-     *                      CURRENT - текущее
-     *                      PAST - завершенное
-     *                      FUTURE - будущее
-     *                      WAITING - ожидающее потверждение
-     *                      REJECTED - отклоненный
+     * Параметр {state}:    ALL - все
+     * CURRENT - текущее
+     * PAST - завершенное
+     * FUTURE - будущее
+     * WAITING - ожидающее потверждение
+     * REJECTED - отклоненный
      * отсортировано по дате
+     *
      * @param headers
      * @return
      */
