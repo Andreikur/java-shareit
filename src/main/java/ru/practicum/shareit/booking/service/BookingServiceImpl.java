@@ -5,12 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingDtoShort;
-import ru.practicum.shareit.booking.enums.State;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.enums.StatusBooking;
@@ -66,7 +64,7 @@ public class BookingServiceImpl implements BookingService{
                     "Вещь не может быть забронирована свом хозяином"));
         }
 
-        BookingDto bookingDto = BookingMapper.toBookingTdo(bookingDtoShort);
+        BookingDto bookingDto = BookingMapper.toBookingDto(bookingDtoShort);
         bookingDto.setItem(item);
         bookingDto.setBooker(userBooker);
         bookingDto.setStatus(StatusBooking.WAITING);
@@ -137,15 +135,15 @@ public class BookingServiceImpl implements BookingService{
     }
 
     @Transactional(readOnly = true)
-    public List<BookingDto> getAllBooking(Long idUser, String state) {
-        User userBooker = userRepository.findById(idUser).orElseThrow(() ->
+    public List<BookingDto> getAllBooking(long idUser, String state) {
+        userRepository.findById(idUser).orElseThrow(() ->
                 new UserNotFoundException(String.format("Пользователь с таким id не найден")));
 
-        /*Sort sort = Sort.by(Sort.Direction.DESC, "start");
+        //Sort sort = Sort.by(Sort.Direction.DESC, "start");
 
         //List<Booking> bookings = bookingRepository.findAll(sort);
 
-        List<Booking> bookings = bookingRepository.findAllByBookerId(userBooker.getId(), sort);*/
+        //List<Booking> bookings = bookingRepository.findAllByBookerId(userBooker.getId(), sort);
         List<Booking> bookingsList = new ArrayList<>();
         switch (state) {
             case "ALL":
@@ -161,10 +159,10 @@ public class BookingServiceImpl implements BookingService{
                 bookingsList.addAll(bookingRepository.findByBookerFuture(idUser, LocalDateTime.now()));
                 break;
             case "WAITING":
-                bookingsList.addAll(bookingRepository.findByBookerAndState(idUser, State.WAITING));
+                bookingsList.addAll(bookingRepository.findByBookerAndState(idUser, StatusBooking.WAITING));
                 break;
             case "REJECTED":
-                bookingsList.addAll(bookingRepository.findByBookerAndState(idUser, State.REJECTED));
+                bookingsList.addAll(bookingRepository.findByBookerAndState(idUser, StatusBooking.REJECTED));
                 break;
             default:
                 throw new BookingAvailableException("Unknown state: UNSUPPORTED_STATUS");
@@ -201,10 +199,10 @@ public class BookingServiceImpl implements BookingService{
                 bookingsList.addAll(bookingRepository.getByOwnerFuture(idUserOwner, LocalDateTime.now()));
                 break;
             case "WAITING":
-                bookingsList.addAll(bookingRepository.findByOwnerAndState(idUserOwner, State.WAITING));
+                bookingsList.addAll(bookingRepository.findByOwnerAndState(idUserOwner, StatusBooking.WAITING));
                 break;
             case "REJECTED":
-                bookingsList.addAll(bookingRepository.findByOwnerAndState(idUserOwner, State.REJECTED));
+                bookingsList.addAll(bookingRepository.findByOwnerAndState(idUserOwner, StatusBooking.REJECTED));
                 break;
             default:
                 throw new BookingAvailableException("Unknown state: UNSUPPORTED_STATUS");

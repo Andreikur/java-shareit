@@ -41,11 +41,21 @@ public class BookingMapper {
         );
     }
 
-    public static BookingDto toBookingTdo(BookingDtoShort bookingDtoShort){
+    public static BookingDto toBookingDto(BookingDtoShort bookingDtoShort){
         return new BookingDto(
                 bookingDtoShort.getId(),
                 bookingDtoShort.getStart(),
                 bookingDtoShort.getEnd()
+        );
+    }
+
+    public static BookingDtoShort toBookingDtoShort (Booking booking){
+        return new BookingDtoShort(
+                booking.getId(),
+                booking.getStart(),
+                booking.getEnd(),
+                booking.getItem().getId(),
+                booking.getBooker().getId()
         );
     }
 }

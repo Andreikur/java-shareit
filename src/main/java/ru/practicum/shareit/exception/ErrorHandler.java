@@ -62,6 +62,13 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleBookingBadRequestException(final BookingBadRequestException e) {
+        log.info("{400}", e.getMessage(), e);
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleException(final Exception e) {
         log.info("{400}", e.getMessage(), e);
         return new ErrorResponse(e.getMessage());

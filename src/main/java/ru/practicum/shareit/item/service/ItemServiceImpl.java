@@ -7,9 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.shareit.CommentRepository;
+import ru.practicum.shareit.comment.repository.CommentRepository;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
-import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.comment.dto.CommentDto;
 import ru.practicum.shareit.comment.mapper.CommentMapper;
@@ -20,11 +19,8 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
-import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.model.mapper.UserMapper;
 import ru.practicum.shareit.user.repository.UserRepository;
-import ru.practicum.shareit.user.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -80,13 +76,15 @@ public class ItemServiceImpl implements ItemService {
         return ItemMapper.toItemDto(currentItem);
     }
 
+
+    //!!!!!!!!!!!!!!!!
     @Transactional(readOnly = true)
-    public ItemDto getItem(long id) {
+    public ItemBooking getItem(long userId, long itemId) {
         try {
-            Item item = itemRepository.findById(id).orElseThrow(() ->
+            Item item = itemRepository.findById(itemId).orElseThrow(() ->
                     new ItemNotFoundException(String.format("Вещь с таким id не найден")));
-            return ItemMapper.toItemDto(item);
-            //return setComments(ItemMapper.toItemDto(item));
+            //return ItemMapper.toItemDto(item);
+            return setComments(setBookings(userId, item), itemId);
         } catch (DataIntegrityViolationException e){
             if(e.getCause() instanceof ConstraintViolationException) {
                 throw new ItemNotCreatedByUserException(String.format(
@@ -103,15 +101,20 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Transactional(readOnly = true)
-    public List<ItemDto> getAllItemsUser(long idUserOwner) {
-        List<Item> itemList = itemRepository.findAll();
+    public List<ItemBooking> getAllItemsUser(long idUserOwner) {
+       /* List<Item> itemList = itemRepository.findAll();
         List<ItemDto> itemDtoList = new ArrayList<>();
+
+        items.stream().map(item -> setBookings(null, item)).collect(Collectors.toList());
+
         for (Item item : itemList) {
             if (item.getOwner().getId() == idUserOwner) {
                 itemDtoList.add(ItemMapper.toItemDto(item));
             }
-        }
-        return itemDtoList;
+        }*/
+        return itemRepository.findAllByOwnerIdOrderByIdAsc(idUserOwner).stream()
+                .map(item -> setBookings(idUserOwner, item))
+                .collect(Collectors.toList());
     }
 
     public List<ItemDto> searchItem(long idUserOwner, String text) {
@@ -128,24 +131,25 @@ public class ItemServiceImpl implements ItemService {
         return itemDtoList;
     }
 
+
+    //!!!!!!!!!
     private ItemBooking setBookings(long userId, Item item) {
         ItemBooking itemBooking = ItemMapper.toItemBooking(item);
         if (item.getOwner().getId() == userId) {
             itemBooking.setLastBooking(
                     bookingRepository.findLastBooking(
-                            itemBooking.getId(), LocalDateTime.now(),userId
-                    ).map(BookingMapper::toBookingDto).orElse(null));
+                            item.getId(), LocalDateTime.now(),userId)
+                            .map(BookingMapper::toBookingDtoShort).orElse(null));
             itemBooking.setNextBooking(
                     bookingRepository.findNextBooking(
-                            itemBooking.getId(), LocalDateTime.now(),userId
-                    ).map(BookingMapper::toBookingDto).orElse(null));
+                            item.getId(), LocalDateTime.now(),userId
+                    ).map(BookingMapper::toBookingDtoShort).orElse(null));
         } else {
             itemBooking.setLastBooking(null);
             itemBooking.setNextBooking(null);
         }
         return itemBooking;
     }
-
 
     private ItemBooking setComments(ItemBooking itemDtoBooking, long itemId) {
         List<CommentDto> commentList = commentRepository.findAllByItemId(itemId).stream()
@@ -166,7 +170,7 @@ public class ItemServiceImpl implements ItemService {
                 new ItemNotFoundException(String.format("Вещь с таким id не найден")));
 
         bookingRepository.findByBookerIdAndItemIdAndEndBefore(userId, itemId, LocalDateTime.now())
-                .orElseThrow(() -> new BookingNotFoundException("Бронирование отсутствует"));
+                .orElseThrow(() -> new BookingBadRequestException("Бронирование отсутствует"));
 
         /*Booking booking = bookingRepository.findById(idBooking).orElseThrow(() ->
                 new BookingNotFoundException(String.format("Бронь с таким id не найдена")));*/

@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.comment.dto.CommentDto;
+import ru.practicum.shareit.item.dto.ItemBooking;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
 
@@ -54,14 +55,17 @@ public class ItemController {
     }
 
     /**
-     * Получаем вещь
      *
-     * @param id
+     * @param headers
+     * @param itemId
      * @return
      */
     @GetMapping("{id}")
-    public ItemDto getItem(@PathVariable("id") Long id) {
-        return itemService.getItem(id);
+    public ItemBooking getItem(@RequestHeader Map<String, String> headers,
+                               @PathVariable("id") Long itemId) {
+        String stringIdUserOwner = headers.get("x-sharer-user-id");
+        long userId = Long.parseLong(stringIdUserOwner);
+        return itemService.getItem(userId, itemId);
     }
 
     /**
@@ -72,11 +76,11 @@ public class ItemController {
      * @return
      */
     @GetMapping
-    public List<ItemDto> getAllItem(@RequestHeader Map<String, String> headers,
+    public List<ItemBooking> getAllItem(@RequestHeader Map<String, String> headers,
                                     @RequestParam(required = false) String text) {
-        if (headers == null && text == null) {
+        /*if (headers == null && text == null) {
             return itemService.getAllItem();
-        }
+        }*/
         String stringIdUserOwner = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner);
         return itemService.getAllItemsUser(idUserOwner);
