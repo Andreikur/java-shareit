@@ -5,7 +5,11 @@ import ru.practicum.shareit.comment.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
-public class CommentMapper {
+public final class CommentMapper {
+
+    private CommentMapper() {
+    }
+
     public static Comment toComment(User author, Item item, CommentDto commentDto) {
         return new Comment(commentDto.getId(),
                 commentDto.getText(),

@@ -14,8 +14,8 @@ import java.util.Optional;
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     @Query("SELECT b FROM Booking b " +
-            "where b.booker.id = ?1 " +
-            "ORDER BY b.start desc")
+            "WHERE b.booker.id = ?1 " +
+            "ORDER BY b.start DESC")
     List<Booking> findAllByBookerOrder(long userId);
 
     @Query("SELECT b FROM Booking b " +
@@ -31,61 +31,61 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "ORDER BY b.start DESC")
     List<Booking> findByBookerPast(long userId, LocalDateTime endTime);
 
-    @Query("SELECT b from Booking b " +
+    @Query("SELECT b FROM Booking b " +
             "WHERE b.start >?2 " +
             "AND b.booker.id = ?1 " +
             "ORDER BY b.start DESC")
     List<Booking> findByBookerFuture(long userId, LocalDateTime startTime);
 
-    @Query("SELECT b from Booking b " +
+    @Query("SELECT b FROM Booking b " +
             "WHERE b.booker.id = ?1 " +
             "AND b.status = ?2 " +
-            "ORDER BY b.status desc")
+            "ORDER BY b.status DESC")
     List<Booking> findByBookerAndState(long userId, StatusBooking status);
 
-    @Query("SELECT b from Booking b " +
-            "where b.item.owner.id = ?1 " +
-            "and b.end > ?2 " +
-            "and b.start < ?2 " +
-            "order by b.start")
+    @Query("SELECT b FROM Booking b " +
+            "WHERE b.item.owner.id = ?1 " +
+            "AND b.end > ?2 " +
+            "AND b.start < ?2 " +
+            "ORDER BY b.start")
     List<Booking> getByOwnerCurrent(long userId, LocalDateTime currentTime);
 
-    @Query("SELECT b from Booking b " +
-            "where b.item.owner.id = ?1 " +
-            "and b.end < ?2 " +
-            "order by b.start desc")
+    @Query("SELECT b FROM Booking b " +
+            "WHERE b.item.owner.id = ?1 " +
+            "AND b.end < ?2 " +
+            "ORDER BY b.start DESC")
     List<Booking> getByOwnerPast(long userId, LocalDateTime currentTime);
 
-    @Query("SELECT b from Booking b " +
-            "where b.item.owner.id = ?1 " +
+    @Query("SELECT b FROM Booking b " +
+            "WHERE b.item.owner.id = ?1 " +
             "AND b.start > ?2 " +
-            "ORDER BY b.start desc")
+            "ORDER BY b.start DESC")
     List<Booking> getByOwnerFuture(long userId, LocalDateTime currentTime);
 
-    @Query("SELECT b from Booking b " +
-            "where b.item.owner.id = ?1 " +
-            "order by b.start desc")
+    @Query("SELECT b FROM Booking b " +
+            "WHERE b.item.owner.id = ?1 " +
+            "ORDER BY b.start DESC")
     List<Booking> getByOwner(long userId);
 
-    @Query("SELECT b from Booking b " +
-            "where b.item.owner.id = ?1 " +
+    @Query("SELECT b FROM Booking b " +
+            "WHERE b.item.owner.id = ?1 " +
             "AND b.status = ?2 " +
-            "order by b.start desc")
+            "ORDER BY b.start DESC")
     List<Booking> findByOwnerAndState(long userId, StatusBooking status);
 
     Optional<Booking> findByBookerIdAndItemIdAndEndBefore(long bookerId, long itemId, LocalDateTime end);
 
-    @Query("select distinct b from Booking b " +
-            "where b.end < ?2 " +
-            "and b.item.id = ?1 " +
-            "and b.item.owner.id = ?3 " +
-            "order by b.start desc")
+    @Query("SELECT DISTINCT b from Booking b " +
+            "WHERE b.end < ?2 " +
+            "AND b.item.id = ?1 " +
+            "AND b.item.owner.id = ?3 " +
+            "ORDER BY b.start DESC")
     Optional<Booking> findLastBooking(long itemId, LocalDateTime now, long userId);
 
-    @Query("select distinct b from Booking b " +
-            "where b.start > ?2 " +
-            "and b.item.id = ?1 " +
-            "and b.item.owner.id = ?3 " +
-            "order by b.start ")
+    @Query("SELECT DISTINCT b FROM Booking b " +
+            "WHERE b.start > ?2 " +
+            "AND b.item.id = ?1 " +
+            "AND b.item.owner.id = ?3 " +
+            "ORDER BY b.start ")
     Optional<Booking> findNextBooking(long itemId, LocalDateTime now, long userId);
 }

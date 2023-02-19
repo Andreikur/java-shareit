@@ -1,5 +1,6 @@
 package ru.practicum.shareit.booking.mapper;
 
+import lombok.Data;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingDtoShort;
 import ru.practicum.shareit.booking.model.Booking;
@@ -7,7 +8,7 @@ import ru.practicum.shareit.booking.model.Booking;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookingMapper {
+public final class BookingMapper {
     private BookingMapper() {
     }
 
