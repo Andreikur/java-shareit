@@ -19,12 +19,11 @@ import java.util.Map;
 @RequestMapping(path = "/bookings")
 public class BookingController {
     private final BookingService bookingService;
-    final String HEAD = "x-sharer-user-id";
 
     @PostMapping
     public BookingDto addBooking(@Valid @RequestBody BookingDtoShort bookingDtoShort,
                                  @RequestHeader Map<String, String> headers) {
-        String stringIdUserBooker = headers.get(HEAD);
+        String stringIdUserBooker = headers.get("x-sharer-user-id");
         long idUserBooker = Long.parseLong(stringIdUserBooker);
         return bookingService.addBooking(bookingDtoShort, idUserBooker);
     }
@@ -33,7 +32,7 @@ public class BookingController {
     public BookingDto updateApproved(@PathVariable Long bookingId,
                                      @RequestHeader Map<String, String> headers,
                                      @RequestParam String approved) {
-        String stringIdUserOwner = headers.get(HEAD);
+        String stringIdUserOwner = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner);
         boolean approvedBoolean = Boolean.parseBoolean(approved);
         return bookingService.updateApproved(bookingId, idUserOwner, approvedBoolean);
@@ -50,7 +49,7 @@ public class BookingController {
     @GetMapping("{id}")
     public BookingDto getBooking(@PathVariable Long id,
                                  @RequestHeader Map<String, String> headers) {
-        String stringIdUser = headers.get(HEAD);
+        String stringIdUser = headers.get("x-sharer-user-id");
         long idUser = Long.parseLong(stringIdUser);
         return bookingService.getBooking(id, idUser);
     }
@@ -72,7 +71,7 @@ public class BookingController {
     @GetMapping
     public List<BookingDto> getAllBooking(@RequestHeader Map<String, String> headers,
                                           @RequestParam(defaultValue = "ALL") String state) {
-        String stringIdUserOwner = headers.get(HEAD);
+        String stringIdUserOwner = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner);
         return bookingService.getAllBooking(idUserOwner, state);
     }
@@ -94,7 +93,7 @@ public class BookingController {
     @GetMapping({"/owner"})
     public List<BookingDto> getAllBookingOwner(@RequestHeader Map<String, String> headers,
                                                @RequestParam(defaultValue = "ALL") String state) {
-        String stringIdUserOwner = headers.get(HEAD);
+        String stringIdUserOwner = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner);
         return bookingService.getAllBookingOwner(idUserOwner, state);
     }

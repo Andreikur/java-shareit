@@ -1,6 +1,5 @@
 package ru.practicum.shareit.booking.mapper;
 
-import lombok.Data;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingDtoShort;
 import ru.practicum.shareit.booking.model.Booking;
