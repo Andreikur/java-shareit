@@ -19,6 +19,8 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.request.repository.RequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
@@ -26,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -37,6 +40,7 @@ public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final BookingRepository bookingRepository;
+    private final RequestRepository requestRepository;
 
     @Transactional
     @Override
@@ -44,7 +48,20 @@ public class ItemServiceImpl implements ItemService {
         User user = userRepository.findById(idUserOwner).orElseThrow(() ->
                 new UserNotFoundException(String.format("Пользователь с таким id не найден")));
         itemDto.setOwner(user);
-        Item item = itemRepository.save(ItemMapper.toItem(itemDto));
+
+        Item item = ItemMapper.toItem(itemDto);
+        if(itemDto.getRequestId() != null){
+            ItemRequest itemRequest = requestRepository.findById(itemDto.getRequestId()).orElseThrow(() ->
+                    new UserNotFoundException(String.format("Запрос с таким id не найден")));
+            item.setRequest(itemRequest);
+
+            List<Item> itemSet = itemRequest.getItems();
+
+            System.out.println(itemSet);  //!!!!!!!!!!!!!!!!!!!!!!!!!!
+            itemSet.add(item);
+            System.out.println(itemSet);  //!!!!!!!!!!!!!!!!!!!!!!!!!!
+        }
+        itemRepository.save(item);
         return ItemMapper.toItemDto(item);
     }
 

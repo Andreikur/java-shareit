@@ -5,8 +5,12 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingDtoShort;
 import ru.practicum.shareit.booking.service.BookingService;
+import ru.practicum.shareit.exception.BookingBadRequestException;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 import java.util.Map;
 
@@ -70,10 +74,16 @@ public class BookingController {
 
     @GetMapping
     public List<BookingDto> getAllBooking(@RequestHeader Map<String, String> headers,
-                                          @RequestParam(defaultValue = "ALL") String state) {
+                                          @RequestParam(defaultValue = "ALL", required = false) String state,
+                                          @Min(0) @RequestParam(defaultValue = "0", required = false) int from,
+                                          @Min(1) @RequestParam(defaultValue = "20", required = false) int size) {
         String stringIdUserOwner = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner);
-        return bookingService.getAllBooking(idUserOwner, state);
+        //Анотации @Min почему то не отрабатывают
+        if(from < 0 || size <= 0){
+            throw new BookingBadRequestException(String.format("Значения должны быть не отрицательными"));
+        }
+        return bookingService.getAllBooking(idUserOwner, state, from, size);
     }
 
     /**
@@ -92,9 +102,14 @@ public class BookingController {
 
     @GetMapping({"/owner"})
     public List<BookingDto> getAllBookingOwner(@RequestHeader Map<String, String> headers,
-                                               @RequestParam(defaultValue = "ALL") String state) {
+                                               @RequestParam(defaultValue = "ALL", required = false) String state,
+                                               @Min(0) @RequestParam (defaultValue = "0", required = false) int from,
+                                               @Min(1) @RequestParam(defaultValue = "20", required = false) int size) {
         String stringIdUserOwner = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner);
-        return bookingService.getAllBookingOwner(idUserOwner, state);
+        if(from < 0 || size <= 0){
+            throw new BookingBadRequestException(String.format("Значения должны быть не отрицательными"));
+        }
+        return bookingService.getAllBookingOwner(idUserOwner, state, from, size);
     }
 }
