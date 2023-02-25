@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemRequestMapper {
 
-    public static ItemRequestDto toItemRequestDto(ItemRequest itemRequest){
+    public static ItemRequestDto toItemRequestDto(ItemRequest itemRequest) {
         return new ItemRequestDto(
                 itemRequest.getId(),
                 itemRequest.getDescription(),
@@ -24,15 +24,15 @@ public class ItemRequestMapper {
         );
     }
 
-    public static List<ItemRequestDto> toItemRequestDto(Iterable<ItemRequest> itemRequests){
+    public static List<ItemRequestDto> toItemRequestDto(Iterable<ItemRequest> itemRequests) {
         List<ItemRequestDto> itemRequestDtoList = new ArrayList<>();
-        for (ItemRequest itemRequest : itemRequests){
+        for (ItemRequest itemRequest : itemRequests) {
             itemRequestDtoList.add(toItemRequestDto(itemRequest));
         }
         return itemRequestDtoList;
     }
 
-    public static ItemRequest toItemRequest(ItemRequestDto itemRequestDto){
+    public static ItemRequest toItemRequest(ItemRequestDto itemRequestDto) {
         return new ItemRequest(
                 itemRequestDto.getId(),
                 itemRequestDto.getDescription(),
@@ -42,9 +42,9 @@ public class ItemRequestMapper {
         );
     }
 
-    public static ItemRequestShort toItemRequestShort(ItemRequest itemRequest){
+    public static ItemRequestShort toItemRequestShort(ItemRequest itemRequest) {
         List<Long> listIdItems = new ArrayList<>();
-        for (Item item : itemRequest.getItems()){
+        for (Item item : itemRequest.getItems()) {
             listIdItems.add(item.getId());
         }
         return new ItemRequestShort(
@@ -56,9 +56,9 @@ public class ItemRequestMapper {
         );
     }
 
-    public static List<ItemRequestShort> toItemRequestShort(Iterable<ItemRequest> itemRequests){
+    public static List<ItemRequestShort> toItemRequestShort(Iterable<ItemRequest> itemRequests) {
         List<ItemRequestShort> itemRequestDtoList = new ArrayList<>();
-        for (ItemRequest itemRequest : itemRequests){
+        for (ItemRequest itemRequest : itemRequests) {
             itemRequestDtoList.add(toItemRequestShort(itemRequest));
         }
         return itemRequestDtoList;

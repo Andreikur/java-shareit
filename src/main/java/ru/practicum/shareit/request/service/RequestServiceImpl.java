@@ -23,14 +23,14 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class RequestServiceImpl implements RequestService{
+public class RequestServiceImpl implements RequestService {
     private final RequestRepository requestRepository;
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
 
     @Transactional
     @Override
-    public ItemRequestDto addRequest(ItemRequestDto itemRequestDto, long userId){
+    public ItemRequestDto addRequest(ItemRequestDto itemRequestDto, long userId) {
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException(String.format("Пользователь с таким id не найден")));
 
@@ -42,16 +42,16 @@ public class RequestServiceImpl implements RequestService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<ItemRequestShort> getAllYourItemRequestDto(long userId){
+    public List<ItemRequestShort> getAllYourItemRequestDto(long userId) {
         userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException(String.format("Пользователь с таким id не найден")));
         List<ItemRequest> itemRequests = requestRepository.findAllItemRequestByReguestor(userId);
-        return ItemRequestMapper.toItemRequestShort(itemRequests); //!!!!!!!
+        return ItemRequestMapper.toItemRequestShort(itemRequests);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<ItemRequestShort> getAllOthersItemRequestDto(long userId){
+    public List<ItemRequestShort> getAllOthersItemRequestDto(long userId) {
         userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException(String.format("Пользователь с таким id не найден")));
         List<ItemRequest> itemRequests = requestRepository.findAllItemRequestCreatedByOthers(userId);
@@ -60,18 +60,18 @@ public class RequestServiceImpl implements RequestService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<ItemRequestShort> getAllOthersItemRequestDtoPageByPage(long userId, long from, long size){
+    public List<ItemRequestShort> getAllOthersItemRequestDtoPageByPage(long userId, long from, long size) {
         userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException(String.format("Пользователь с таким id не найден")));
         List<ItemRequest> itemRequests = requestRepository.findAllItemRequestCreatedByOthers(userId);
 
         List<ItemRequest> itemRequestsSort = new ArrayList<>();
         itemRequestsSort.addAll((int) from, itemRequests);
-        if (itemRequestsSort.size() < size){
+        if (itemRequestsSort.size() < size) {
             size = itemRequestsSort.size();
         }
         itemRequests.clear();
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             itemRequests.add(itemRequestsSort.get(i));
         }
 
@@ -80,7 +80,7 @@ public class RequestServiceImpl implements RequestService{
 
     @Transactional(readOnly = true)
     @Override
-    public ItemRequestShort getItemRequest(long userId, long requestId){
+    public ItemRequestShort getItemRequest(long userId, long requestId) {
         userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException(String.format("Пользователь с таким id не найден")));
         requestRepository.findById(requestId).orElseThrow(() ->

@@ -9,8 +9,6 @@ import ru.practicum.shareit.exception.BookingBadRequestException;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 import java.util.Map;
 
@@ -80,7 +78,7 @@ public class BookingController {
         String stringIdUserOwner = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner);
         //Анотации @Min почему то не отрабатывают
-        if(from < 0 || size <= 0){
+        if (from < 0 || size <= 0) {
             throw new BookingBadRequestException(String.format("Значения должны быть не отрицательными"));
         }
         return bookingService.getAllBooking(idUserOwner, state, from, size);
@@ -107,7 +105,7 @@ public class BookingController {
                                                @Min(1) @RequestParam(defaultValue = "20", required = false) int size) {
         String stringIdUserOwner = headers.get("x-sharer-user-id");
         long idUserOwner = Long.parseLong(stringIdUserOwner);
-        if(from < 0 || size <= 0){
+        if (from < 0 || size <= 0) {
             throw new BookingBadRequestException(String.format("Значения должны быть не отрицательными"));
         }
         return bookingService.getAllBookingOwner(idUserOwner, state, from, size);

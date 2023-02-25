@@ -13,7 +13,7 @@ import java.util.List;
 public final class ItemMapper {
 
     public static ItemDto toItemDto(Item item) {
-        if(item.getRequest() != null) {
+        if (item.getRequest() != null) {
             return new ItemDto(
                     item.getId(),
                     item.getName(),

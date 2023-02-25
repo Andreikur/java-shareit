@@ -28,7 +28,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -50,7 +49,7 @@ public class ItemServiceImpl implements ItemService {
         itemDto.setOwner(user);
 
         Item item = ItemMapper.toItem(itemDto);
-        if(itemDto.getRequestId() != null){
+        if (itemDto.getRequestId() != null) {
             ItemRequest itemRequest = requestRepository.findById(itemDto.getRequestId()).orElseThrow(() ->
                     new UserNotFoundException(String.format("Запрос с таким id не найден")));
             item.setRequest(itemRequest);
