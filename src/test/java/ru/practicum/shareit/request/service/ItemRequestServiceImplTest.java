@@ -51,7 +51,9 @@ class ItemRequestServiceImplTest {
     private UserRepository userRepository;
 
     private User user;
+    private User user2;
     private Item item;
+    LocalDateTime data;
     private ItemRequest itemRequest;
     private ItemRequestDto itemRequestDto;
 
@@ -59,16 +61,19 @@ class ItemRequestServiceImplTest {
 
     @BeforeEach
     void beforeEach() {
-        LocalDateTime data = LocalDateTime.now();
+        data = LocalDateTime.now();
         List<Item> items = new ArrayList<>();
         user = new User(1L, "user1@mail.com", "User1");
-        item = new Item(1L,"name","description",true, user,null);
+        user2 = new User(2L, "user2@mail.com", "User2");
+        //item = new Item(1L,"name","description",true, user,null);
+        item = new Item(1, "Item1", "Item_description", null, user, itemRequest);
 
         itemRequest = new ItemRequest(1, "ItemRequest_description", user, data, items);
+        itemRequest.setItems(List.of(item));
 
         itemRequestDto = ItemRequestMapper.toItemRequestDto(itemRequest);
 
-        Item item = new Item(1, "Item1", "Item_description", null, user, itemRequest);
+        //item = new Item(1, "Item1", "Item_description", null, user, itemRequest);
 
         itemRequestDto.setItems(List.of(item));
     }
@@ -118,63 +123,75 @@ class ItemRequestServiceImplTest {
         assertEquals("Пользователь с таким id не найден", exception.getMessage());
     }
 
-    /*@Test
+    @Test
+    void getAllOthersItemRequestDtoTest() {
+        when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(user2));
+
+        List<ItemRequestShort> itemRequestList = requestService.getAllOthersItemRequestDto(user2.getId());
+        assertTrue(itemRequestList.isEmpty());
+        verify(requestRepository).findAllItemRequestCreatedByOthers(anyLong());
+    }
+
+    @Test
+    void getAllOthersItemRequestDtoWhenUserNotFoundTest() {
+        when(userRepository.findById(anyLong())).thenThrow(new UserNotFoundException("Пользователь с таким id не найден"));
+
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class,
+                () -> requestService.getAllOthersItemRequestDto(2));
+        assertEquals("Пользователь с таким id не найден", exception.getMessage());
+    }
+
+    @Test
     void getAllOthersItemRequestDtoPageByPageTest() {
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(user));
 
-        ItemRequest itemRequest = ItemRequestMapper.toItemRequest(itemRequestDto);
+        List<ItemRequestShort> itemRequestList = requestService.getAllOthersItemRequestDtoPageByPage(user.getId(), 0, 1);
+        assertTrue(itemRequestList.isEmpty());
+        verify(requestRepository).findAllItemRequestCreatedByOthers(anyLong());
+    }
 
-        when(requestRepository.findById(anyLong())).thenReturn(Optional.of(itemRequest));
-        item.setRequest(itemRequest);
+    @Test
+    void getAllOthersItemRequestDtoPageByPageWhenUserNotFoundTest() {
+        when(userRepository.findById(anyLong())).thenThrow(new UserNotFoundException("Пользователь с таким id не найден"));
 
-        when(itemRepository.findAllByOwnerIdOrderByIdAsc(anyLong())).thenReturn(Collections.singletonList(item));
-
-        ItemRequestDto responseRequest = requestService.getAllOthersItemRequestDtoPageByPage(user.getId(), itemRequestDto.getId());
-
-        assertNotNull(responseRequest);
-        verify(requestRepository).findById(anyLong());
-        verify(itemRepository).findByItemRequestId(anyLong());
-    }*/
-
-    /*@Test
-    void getRequestInfo_whenRequestNotFound_thenExceptionThrown() {
-        when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(user));
-        when(requestRepository.findById(anyLong())).thenThrow(new ObjectNotFoundException("Request not found"));
-
-        ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class, () ->
-                requestService.getRequestInfo(user.getId(), itemRequestDto.getId()));
-        assertEquals("Request not found", exception.getMessage());
-    }*/
-
-    /*@Test
-    void getRequestsListTest() {
-        when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(user));
-        when(requestRepository.findById(anyLong())).thenThrow(new ObjectNotFoundException("Запрос не найден"));
-
-        ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class, () ->
-                requestService.getRequestInfo(user.getId(), 1L)
-        );
-
-        assertEquals("Запрос не найден", exception.getMessage());
-    }*/
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class,
+                () -> requestService.getAllOthersItemRequestDtoPageByPage(1, 0, 1));
+        assertEquals("Пользователь с таким id не найден", exception.getMessage());
+    }
 
     /*@Test
     void getItemRequestsTest() {
         when(userRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(user));
 
-        when(requestRepository.findAllPageable(anyLong(), any(PageRequest.class)))
-                .thenReturn(new PageImpl<>(List.of(itemRequest)));
+        when(requestRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(itemRequest));
 
-        List<ItemRequestDtoResponse> itemRequestDtos = requestService.getRequestsList(
-                user.getId(),
-                0,
-                10);
+        ItemRequestShort itemRequestShort = requestService.getItemRequest(1, 1);
 
-        assertEquals(1, itemRequestDtos.size());
-        assertEquals(1, itemRequestDtos.get(0).getId());
-        assertEquals("description", itemRequestDtos.get(0).getDescription());
-        assertEquals(user.getId(), itemRequestDtos.get(0).getRequestorId());
-        assertEquals(Collections.emptyList(), itemRequestDtos.get(0).getItems());
+        assertEquals(1, itemRequestShort.getId());
+        assertEquals("ItemRequest_description", itemRequestShort.getDescription());
+        assertEquals(user, itemRequestShort.getRequestor());
+        assertEquals(data, itemRequestShort.getCreated());
     }*/
+
+    @Test
+    void getItemRequestUserNotFoundTest() {
+        when(userRepository.findById(anyLong())).thenThrow(new UserNotFoundException("Пользователь с таким id не найден"));
+
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class,
+                () -> requestService.getItemRequest(1, 1));
+        assertEquals("Пользователь с таким id не найден", exception.getMessage());
+    }
+
+    @Test
+    void getItemRequestRequestNotFoundTest() {
+        when(requestRepository.findById(anyLong())).thenThrow(new UserNotFoundException("Запрос с таким id не найден"));
+
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class,
+                () -> requestService.getItemRequest(1, 1));
+        assertEquals("Пользователь с таким id не найден", exception.getMessage());
+    }
+
 }

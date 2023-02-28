@@ -33,11 +33,23 @@ public class ItemRequestController {
         return requestService.addRequest(itemRequestDto, userId);
     }
 
+    /**
+     * Получить все запросы этого пользователя
+     * @param userId
+     * @return
+     */
     @GetMapping
     public List<ItemRequestShort> getAllYourItemRequestDto(@RequestHeader (HEADER) long userId) {
         return requestService.getAllYourItemRequestDto(userId);
     }
 
+    /**
+     * Получить все запросы других пользователей
+     * @param userId
+     * @param from
+     * @param size
+     * @return
+     */
     @GetMapping("/all")
     public List<ItemRequestShort> getAllOthersItemRequestDto(@RequestHeader (HEADER) long userId,
                                                      @RequestParam(required = false) Long from, Long size) {

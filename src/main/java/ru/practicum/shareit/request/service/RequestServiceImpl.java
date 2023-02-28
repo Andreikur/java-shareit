@@ -58,6 +58,13 @@ public class RequestServiceImpl implements RequestService {
         return ItemRequestMapper.toItemRequestShort(itemRequests);
     }
 
+    /**
+     * Получить список запросов созданных другими пользователями
+     * @param userId
+     * @param from
+     * @param size
+     * @return
+     */
     @Transactional(readOnly = true)
     @Override
     public List<ItemRequestShort> getAllOthersItemRequestDtoPageByPage(long userId, long from, long size) {
@@ -78,6 +85,12 @@ public class RequestServiceImpl implements RequestService {
         return ItemRequestMapper.toItemRequestShort(itemRequests);
     }
 
+    /**
+     * Получить данные о конкретном запросе
+     * @param userId
+     * @param requestId
+     * @return
+     */
     @Transactional(readOnly = true)
     @Override
     public ItemRequestShort getItemRequest(long userId, long requestId) {
