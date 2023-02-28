@@ -82,7 +82,7 @@ class UserControllerTest {
         when(userService.getAllUser())
                 .thenReturn(List.of(userDto));
 
-        mockMvc.perform(get("/users/"))
+        mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(mapper.writeValueAsString(List.of(userDto))));
     }

@@ -96,7 +96,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void createWhenUserNotFoundExceptionThrownTest() {
+    void addRequestWhenUserNotFoundExceptionThrownTest() {
         when(userRepository.findById(anyLong())).thenThrow(new UserNotFoundException("Пользователь с таким id не найден"));
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
@@ -193,5 +193,4 @@ class ItemRequestServiceImplTest {
                 () -> requestService.getItemRequest(1, 1));
         assertEquals("Пользователь с таким id не найден", exception.getMessage());
     }
-
 }

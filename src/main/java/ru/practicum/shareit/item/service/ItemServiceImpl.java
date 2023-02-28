@@ -55,10 +55,7 @@ public class ItemServiceImpl implements ItemService {
             item.setRequest(itemRequest);
 
             List<Item> itemSet = itemRequest.getItems();
-
-            System.out.println(itemSet);  //!!!!!!!!!!!!!!!!!!!!!!!!!!
             itemSet.add(item);
-            System.out.println(itemSet);  //!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
         itemRepository.save(item);
         return ItemMapper.toItemDto(item);
@@ -99,12 +96,6 @@ public class ItemServiceImpl implements ItemService {
             }
         }
         return null;
-    }
-
-    @Transactional(readOnly = true)
-    public List<ItemDto> getAllItem() {
-        List<Item> items = itemRepository.findAll();
-        return ItemMapper.toItemDto(items);
     }
 
     @Transactional(readOnly = true)
