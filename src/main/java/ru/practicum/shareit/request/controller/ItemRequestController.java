@@ -8,10 +8,8 @@ import ru.practicum.shareit.request.dto.ItemRequestShort;
 import ru.practicum.shareit.request.service.RequestService;
 import static ru.practicum.shareit.ShareItApp.HEADER;
 
-
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 /**
  * TODO Sprint add-item-requests.
@@ -26,7 +24,7 @@ public class ItemRequestController {
     /**
      * Создание запроса на вещь
      * @param itemRequestDto
-     * @param headers
+     * 
      * @return
      */
     @PostMapping

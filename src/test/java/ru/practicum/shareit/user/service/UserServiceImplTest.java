@@ -39,7 +39,7 @@ class UserServiceImplTest {
     @BeforeEach
     void beforeEach() {
         user1 = new User(1L,  "user1@mail.com", "User1");
-        userData = new HashMap<>(){{
+        userData = new HashMap<>() {{
             put("email", "user1update@mail.com");
             put("name", "User1");
         }};
