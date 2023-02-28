@@ -24,7 +24,7 @@ public class ItemRequestController {
     /**
      * Создание запроса на вещь
      * @param itemRequestDto
-     *
+     * @param userId
      * @return
      */
     @PostMapping
