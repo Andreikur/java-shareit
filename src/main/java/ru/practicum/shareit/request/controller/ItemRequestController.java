@@ -6,6 +6,8 @@ import ru.practicum.shareit.exception.BookingBadRequestException;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestShort;
 import ru.practicum.shareit.request.service.RequestService;
+import static ru.practicum.shareit.ShareItApp.HEADER;
+
 
 import javax.validation.Valid;
 import java.util.List;
@@ -29,24 +31,18 @@ public class ItemRequestController {
      */
     @PostMapping
     public ItemRequestDto addRequest(@Valid @RequestBody ItemRequestDto itemRequestDto,
-                                      @RequestHeader Map<String, String> headers) {
-        String stringIdUserBooker = headers.get("x-sharer-user-id");
-        long userId = Long.parseLong(stringIdUserBooker);
+                                     @RequestHeader (HEADER) long userId) {
         return requestService.addRequest(itemRequestDto, userId);
     }
 
     @GetMapping
-    public List<ItemRequestShort> getAllYourItemRequestDto(@RequestHeader Map<String, String> headers) {
-        String stringIdUser = headers.get("x-sharer-user-id");
-        long userId = Long.parseLong(stringIdUser);
+    public List<ItemRequestShort> getAllYourItemRequestDto(@RequestHeader (HEADER) long userId) {
         return requestService.getAllYourItemRequestDto(userId);
     }
 
     @GetMapping("/all")
-    public List<ItemRequestShort> getAllOthersItemRequestDto(@RequestHeader Map<String, String> headers,
+    public List<ItemRequestShort> getAllOthersItemRequestDto(@RequestHeader (HEADER) long userId,
                                                      @RequestParam(required = false) Long from, Long size) {
-        String stringIdUser = headers.get("x-sharer-user-id");
-        long userId = Long.parseLong(stringIdUser);
 
         if (from == null & size == null) {
             return requestService.getAllOthersItemRequestDto(userId);
@@ -58,10 +54,8 @@ public class ItemRequestController {
     }
 
     @GetMapping("{requestId}")
-    public ItemRequestShort getItemRequestDto(@RequestHeader Map<String, String> headers,
+    public ItemRequestShort getItemRequestDto(@RequestHeader (HEADER) long userId,
                                               @PathVariable Long requestId) {
-        String stringIdUser = headers.get("x-sharer-user-id");
-        long userId = Long.parseLong(stringIdUser);
         return requestService.getItemRequest(userId, requestId);
     }
 

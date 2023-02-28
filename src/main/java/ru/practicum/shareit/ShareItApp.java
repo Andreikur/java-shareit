@@ -9,4 +9,5 @@ public class ShareItApp {
     public static void main(String[] args) {
         SpringApplication.run(ShareItApp.class, args);
     }
+    public static final String HEADER = "X-Sharer-User-Id";
 }

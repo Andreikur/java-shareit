@@ -36,6 +36,6 @@ public class ItemRequest {
     @Column(name = "created", nullable = false)
     private LocalDateTime created;      //время создания запроса
 
-    @OneToMany //(mappedBy = "request", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany
     private List<Item> items;
 }
