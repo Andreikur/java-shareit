@@ -155,27 +155,8 @@ public class BookingServiceImpl implements BookingService {
             default:
                 throw new BookingAvailableException("Unknown state: UNSUPPORTED_STATUS");
         }
-
-        /*if (from != null & size != null) {
-            if(from < 0 || size <= 0) {
-                throw new BookingBadRequestException(String.format("Значения должны быть не отрицательными"));
-            }
-            List<Booking> bookingsListSort = new ArrayList<>();
-            long from1 = from;
-            bookingsListSort.addAll((int) from1, bookingsList);
-            if (bookingsListSort.size() < size) {
-                size = (long) bookingsListSort.size();
-            }
-            bookingsList.clear();
-            for(int i = 0; i < size; i++){
-                bookingsList.add(bookingsListSort.get(i));
-            }
-        }*/
-
         return BookingMapper.toBookingDto(bookingsList);
     }
-
-
 
     @Transactional(readOnly = true)
     @Override
@@ -207,22 +188,6 @@ public class BookingServiceImpl implements BookingService {
             default:
                 throw new BookingAvailableException("Unknown state: UNSUPPORTED_STATUS");
         }
-
-        /*if (from != null & size != null) {
-            if(from < 0 || size <= 0) {
-                throw new BookingBadRequestException(String.format("Значения должны быть не отрицательными"));
-            }
-            List<Booking> bookingsListSort = new ArrayList<>();
-            bookingsList.addAll(Math.toIntExact(from), bookingsListSort);
-            if (bookingsListSort.size() < size) {
-                size = bookingsListSort.size();
-            }
-            bookingsList.clear();
-            for(int i = 0; i < size; i++){
-                bookingsList.add(bookingsListSort.get(i));
-            }
-        }*/
-
         return BookingMapper.toBookingDto(bookingsList);
     }
 }

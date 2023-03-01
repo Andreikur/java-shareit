@@ -63,5 +63,4 @@ public class ItemRequestMapper {
         }
         return itemRequestShortsList;
     }
-
 }

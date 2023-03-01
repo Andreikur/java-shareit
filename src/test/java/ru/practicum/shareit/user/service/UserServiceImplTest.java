@@ -57,7 +57,6 @@ class UserServiceImplTest {
         assertEquals("user1@mail.com", userDto.getEmail());
     }
 
-
     @Test
     void updateUserWithEmailFormatTest() {
         when(userRepository.findById(anyLong()))

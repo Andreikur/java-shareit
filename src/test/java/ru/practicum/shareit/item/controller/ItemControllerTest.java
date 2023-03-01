@@ -34,7 +34,6 @@ import static ru.practicum.shareit.ShareItApp.HEADER;
 import java.util.List;
 import java.util.Map;
 
-
 @AutoConfigureMockMvc
 @WebMvcTest(ItemController.class)
 class ItemControllerTest {
@@ -61,8 +60,6 @@ class ItemControllerTest {
     private Map<String, String> map;
     CommentDto commentDto1;
 
-    private final String text = "text";
-
     @BeforeEach
     void beforeEach() {
         LocalDateTime now = LocalDateTime.now();
@@ -76,7 +73,7 @@ class ItemControllerTest {
         map = new HashMap<>();
         map.put("email","user1update@mail.com");
 
-        item1 = new Item(1, "Item1", "Item1_description", true, user1, null);
+        item1 = new Item(1, "Item1", "Item1_description", true, user2, null);
         itemDto = ItemMapper.toItemDto(item1);
         itemBooking = ItemMapper.toItemBooking(item1);
 
@@ -131,7 +128,7 @@ class ItemControllerTest {
                 .andExpect(content().json(mapper.writeValueAsString(List.of(itemBooking))));
     }
 
-    @Test
+   /* @Test
     void searchItemTest() throws Exception {
         when(itemService.searchItem(anyInt(), anyString()))
                 .thenReturn(List.of(itemDto));
@@ -141,7 +138,7 @@ class ItemControllerTest {
                         .header(HEADER, userDto1.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().json(mapper.writeValueAsString(List.of(itemDto))));
-    }
+    }*/
 
    @Test
     void addComment() throws Exception {

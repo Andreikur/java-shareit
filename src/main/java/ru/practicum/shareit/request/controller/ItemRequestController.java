@@ -68,5 +68,4 @@ public class ItemRequestController {
                                               @PathVariable Long requestId) {
         return requestService.getItemRequest(userId, requestId);
     }
-
 }

@@ -23,7 +23,6 @@ public class ErrorHandler {
         return new ErrorResponse(String.format("Почта не уникальна"));
     }
 
-    //!!!!!!!!!!!!!!!
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleAlreadyExistException(final DataIntegrityViolationException e) {

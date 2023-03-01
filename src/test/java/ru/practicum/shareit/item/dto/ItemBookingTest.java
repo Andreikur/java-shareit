@@ -86,6 +86,5 @@ class ItemBookingTest {
                 "$.lastBooking.id").isEqualTo(lasBookingId);
         assertThat(result).extractingJsonPathNumberValue(
                 "$.nextBooking.id").isEqualTo(nextBookingId);
-
     }
 }

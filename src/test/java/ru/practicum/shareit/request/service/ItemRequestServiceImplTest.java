@@ -42,9 +42,6 @@ class ItemRequestServiceImplTest {
     private RequestServiceImpl requestService;
 
     @Mock
-    private ItemRepository itemRepository;
-
-    @Mock
     private RequestRepository requestRepository;
 
     @Mock
@@ -52,12 +49,9 @@ class ItemRequestServiceImplTest {
 
     private User user;
     private User user2;
-    private Item item;
     LocalDateTime data;
     private ItemRequest itemRequest;
     private ItemRequestDto itemRequestDto;
-
-
 
     @BeforeEach
     void beforeEach() {
@@ -65,15 +59,11 @@ class ItemRequestServiceImplTest {
         List<Item> items = new ArrayList<>();
         user = new User(1L, "user1@mail.com", "User1");
         user2 = new User(2L, "user2@mail.com", "User2");
-        //item = new Item(1L,"name","description",true, user,null);
-        item = new Item(1, "Item1", "Item_description", null, user, itemRequest);
+        Item item = new Item(1, "Item1", "Item_description", null, user, itemRequest);
 
         itemRequest = new ItemRequest(1, "ItemRequest_description", user, data);
-        //itemRequest.setItems(List.of(item));
 
         itemRequestDto = ItemRequestMapper.toItemRequestDto(itemRequest);
-
-        //item = new Item(1, "Item1", "Item_description", null, user, itemRequest);
 
         itemRequestDto.setItems(List.of(item));
     }
@@ -159,22 +149,6 @@ class ItemRequestServiceImplTest {
                 () -> requestService.getAllOthersItemRequestDtoPageByPage(1, 0, 1));
         assertEquals("Пользователь с таким id не найден", exception.getMessage());
     }
-
-    /*@Test
-    void getItemRequestsTest() {
-        when(userRepository.findById(anyLong()))
-                .thenReturn(Optional.ofNullable(user));
-
-        when(requestRepository.findById(anyLong()))
-                .thenReturn(Optional.ofNullable(itemRequest));
-
-        ItemRequestShort itemRequestShort = requestService.getItemRequest(1, 1);
-
-        assertEquals(1, itemRequestShort.getId());
-        assertEquals("ItemRequest_description", itemRequestShort.getDescription());
-        assertEquals(user, itemRequestShort.getRequestor());
-        assertEquals(data, itemRequestShort.getCreated());
-    }*/
 
     @Test
     void getItemRequestUserNotFoundTest() {

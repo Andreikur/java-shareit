@@ -54,12 +54,6 @@ class ItemServiceImplTest {
     @Mock
     private CommentRepository commentRepository;
 
-    @Mock
-    private RequestRepository requestRepository;
-
-    @Mock
-    private UserService userService;
-
     private User user1;
 
     private User user2;
@@ -70,13 +64,11 @@ class ItemServiceImplTest {
 
     private Comment comment1;
 
-    private LocalDateTime now;
-
     Map<String, String> itemData;
 
     @BeforeEach
     void beforeEach() {
-        now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = now.plusDays(1);
         LocalDateTime end = now.plusDays(2);
 
@@ -203,51 +195,6 @@ class ItemServiceImplTest {
 
         assertEquals(Collections.emptyList(), itemDtoList);
     }
-
-   /* @Test
-    void searchItemWithNameInRandomUpperCase() {
-        when(itemRepository.findAll())
-                .thenReturn(List.of(item1));
-
-        List<ItemDto> itemDtoList = itemService.searchItem(1,"Item1");
-
-        assertEquals(1, itemDtoList.size());
-        assertEquals(1, itemDtoList.get(0).getId());
-        assertEquals("Item1 name", itemDtoList.get(0).getName());
-        assertEquals("Item1 description", itemDtoList.get(0).getDescription());
-        assertEquals(true, itemDtoList.get(0).getAvailable());
-        assertNull(itemDtoList.get(0).getRequestId());
-    }*/
-
-    /*@Test
-    void searchItemWithDescriptionInRandomUpperCase() {
-        when(itemRepository.searchByText(anyString(), any(PageRequest.class)))
-                .thenReturn(List.of(item1));
-
-        List<ItemDto> itemDtos = itemService.searchItem("desCription", 0, 20);
-
-        assertEquals(1, itemDtos.size());
-        assertEquals(1, itemDtos.get(0).getId());
-        assertEquals("Item1 name", itemDtos.get(0).getName());
-        assertEquals("Item1 description", itemDtos.get(0).getDescription());
-        assertEquals(true, itemDtos.get(0).getAvailable());
-        assertNull(itemDtos.get(0).getRequestId());
-    }*/
-
-    /*@Test
-    void searchItemWithDescriptionInUpperFirstLetter() {
-        when(itemRepository.searchByText(anyString(), any(PageRequest.class)))
-                .thenReturn(List.of(item1));
-
-        List<ItemDto> itemDtos = itemService.searchItem("desCription", 0, 20);
-
-        assertEquals(1, itemDtos.size());
-        assertEquals(1, itemDtos.get(0).getId());
-        assertEquals("Item1 name", itemDtos.get(0).getName());
-        assertEquals("Item1 description", itemDtos.get(0).getDescription());
-        assertEquals(true, itemDtos.get(0).getAvailable());
-        assertNull(itemDtos.get(0).getRequestId());
-    }*/
 
     @Test
     void addComment() {

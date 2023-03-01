@@ -64,7 +64,6 @@ class ItemRequestControllerTest {
                 items);
     }
 
-    //!!
     @Test
     void addRequestTest() throws Exception {
         when(requestService.addRequest(any(), anyLong())).thenReturn(itemRequestDto);
@@ -80,10 +79,8 @@ class ItemRequestControllerTest {
                 .andExpect(jsonPath("$.description").value("description"));
     }
 
-    //!!
     @Test
     void getAllYourItemRequestDtoTest() throws Exception {
-        //ItemRequest itemRequest = ItemRequestMapper.toItemRequest(itemRequestDto);
         ItemRequestShort itemRequestShort = ItemRequestMapper.toItemRequestShort(itemRequestDto);
         when(requestService.getAllYourItemRequestDto(anyLong())).thenReturn(Collections.singletonList(itemRequestShort));
 
@@ -99,7 +96,6 @@ class ItemRequestControllerTest {
 
     @Test
     void getAllOthersItemRequestDtoTest() throws Exception {
-        //ItemRequest itemRequest = ItemRequestMapper.toItemRequest(itemRequestDto);
         ItemRequestShort itemRequestShort = ItemRequestMapper.toItemRequestShort(itemRequestDto);
         when(requestService.getAllOthersItemRequestDto(anyLong())).thenReturn(Collections.singletonList(itemRequestShort));
 
@@ -115,7 +111,6 @@ class ItemRequestControllerTest {
 
     @Test
     void getItemRequestDtoTest() throws Exception {
-        //ItemRequest itemRequest = ItemRequestMapper.toItemRequest(itemRequestDto);
         ItemRequestShort itemRequestShort = ItemRequestMapper.toItemRequestShort(itemRequestDto);
         when(requestService.getItemRequest(anyLong(), anyLong())).thenReturn(itemRequestShort);
 
