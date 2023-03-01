@@ -40,7 +40,7 @@ class ItemBookingTest {
         User user1 = new User(1L, "User1 name", "user1@mail.com");
         User user2 = new User(2L, "User2 name", "user2@mail.com");
 
-        ItemRequest itemRequest1 = new ItemRequest(1L, "ItemRequest1 description", user1, now, List.of());
+        ItemRequest itemRequest1 = new ItemRequest(1L, "ItemRequest1 description", user1, now);
 
         Item item1 = new Item(1, "Item1", "Item_description", true, user1, itemRequest1);
 

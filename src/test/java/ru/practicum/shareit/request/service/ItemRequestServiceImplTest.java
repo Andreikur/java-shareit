@@ -68,8 +68,8 @@ class ItemRequestServiceImplTest {
         //item = new Item(1L,"name","description",true, user,null);
         item = new Item(1, "Item1", "Item_description", null, user, itemRequest);
 
-        itemRequest = new ItemRequest(1, "ItemRequest_description", user, data, items);
-        itemRequest.setItems(List.of(item));
+        itemRequest = new ItemRequest(1, "ItemRequest_description", user, data);
+        //itemRequest.setItems(List.of(item));
 
         itemRequestDto = ItemRequestMapper.toItemRequestDto(itemRequest);
 

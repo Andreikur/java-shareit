@@ -31,7 +31,7 @@ class ItemRequestDtoTest {
         items = new ArrayList<>();
         user = new User(1L, "user1@mail.com", "User1");
 
-        ItemRequest itemRequest = new ItemRequest(1, "ItemRequest_description", user, data, items);
+        ItemRequest itemRequest = new ItemRequest(1, "ItemRequest_description", user, data);
 
         itemRequestDto = ItemRequestMapper.toItemRequestDto(itemRequest);
 

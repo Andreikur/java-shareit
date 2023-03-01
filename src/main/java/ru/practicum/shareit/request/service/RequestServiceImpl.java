@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.UserNotFoundException;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestShort;
@@ -45,8 +46,12 @@ public class RequestServiceImpl implements RequestService {
     public List<ItemRequestShort> getAllYourItemRequestDto(long userId) {
         userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException(String.format("Пользователь с таким id не найден")));
-        List<ItemRequest> itemRequests = requestRepository.findAllItemRequestByReguestor(userId);
-        return ItemRequestMapper.toItemRequestShort(itemRequests);
+        List<ItemRequestDto> itemRequestDtoList = ItemRequestMapper.
+                toItemRequestDto(requestRepository.findAllItemRequestByReguestor(userId));
+
+        this.setItemsToItemRequestDto(itemRequestDtoList);
+
+        return ItemRequestMapper.toItemRequestShort(itemRequestDtoList);
     }
 
     @Transactional(readOnly = true)
@@ -54,8 +59,10 @@ public class RequestServiceImpl implements RequestService {
     public List<ItemRequestShort> getAllOthersItemRequestDto(long userId) {
         userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException(String.format("Пользователь с таким id не найден")));
-        List<ItemRequest> itemRequests = requestRepository.findAllItemRequestCreatedByOthers(userId);
-        return ItemRequestMapper.toItemRequestShort(itemRequests);
+        List<ItemRequestDto> itemRequestDtoList = ItemRequestMapper.
+                toItemRequestDto(requestRepository.findAllItemRequestCreatedByOthers(userId));
+
+        return ItemRequestMapper.toItemRequestShort(itemRequestDtoList);
     }
 
     /**
@@ -82,7 +89,10 @@ public class RequestServiceImpl implements RequestService {
             itemRequests.add(itemRequestsSort.get(i));
         }
 
-        return ItemRequestMapper.toItemRequestShort(itemRequests);
+        List<ItemRequestDto> itemRequestDtoList = ItemRequestMapper.toItemRequestDto(itemRequests);
+        this.setItemsToItemRequestDto(itemRequestDtoList);
+
+        return ItemRequestMapper.toItemRequestShort(itemRequestDtoList);
     }
 
     /**
@@ -99,6 +109,17 @@ public class RequestServiceImpl implements RequestService {
         requestRepository.findById(requestId).orElseThrow(() ->
                 new UserNotFoundException(String.format("Запрос с таким id не найден")));
         ItemRequest itemRequest = requestRepository.findItemRequest(requestId);
-        return ItemRequestMapper.toItemRequestShort(itemRequest);
+
+        ItemRequestDto itemRequestDto = ItemRequestMapper.toItemRequestDto(itemRequest);
+        this.setItemsToItemRequestDto(List.of(itemRequestDto));
+        return ItemRequestMapper.toItemRequestShort(itemRequestDto);
+    }
+
+    private List<ItemRequestDto> setItemsToItemRequestDto(List<ItemRequestDto> itemRequestDtoList){
+        for (ItemRequestDto itemRequestDto : itemRequestDtoList){
+            List<Item> itemList = itemRepository.findAllThisItemRequest(ItemRequestMapper.toItemRequest(itemRequestDto));
+            itemRequestDto.setItems(itemList);
+        }
+        return itemRequestDtoList;
     }
 }

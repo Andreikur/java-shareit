@@ -20,7 +20,7 @@ public class ItemRequestMapper {
                 itemRequest.getDescription(),
                 itemRequest.getRequestor(),
                 itemRequest.getCreated(),
-                itemRequest.getItems()
+                new ArrayList<>()
         );
     }
 
@@ -37,31 +37,31 @@ public class ItemRequestMapper {
                 itemRequestDto.getId(),
                 itemRequestDto.getDescription(),
                 itemRequestDto.getRequestor(),
-                itemRequestDto.getCreated(),
-                itemRequestDto.getItems()
+                itemRequestDto.getCreated()
+                //itemRequestDto.getItems()
         );
     }
 
-    public static ItemRequestShort toItemRequestShort(ItemRequest itemRequest) {
+    public static ItemRequestShort toItemRequestShort(ItemRequestDto itemRequestDto) {
         List<Long> listIdItems = new ArrayList<>();
-        for (Item item : itemRequest.getItems()) {
+        for (Item item : itemRequestDto.getItems()) {
             listIdItems.add(item.getId());
         }
         return new ItemRequestShort(
-                itemRequest.getId(),
-                itemRequest.getDescription(),
-                itemRequest.getRequestor(),
-                itemRequest.getCreated(),
-                ItemMapper.toItemDto(itemRequest.getItems())
+                itemRequestDto.getId(),
+                itemRequestDto.getDescription(),
+                itemRequestDto.getRequestor(),
+                itemRequestDto.getCreated(),
+                ItemMapper.toItemDto(itemRequestDto.getItems())
         );
     }
 
-    public static List<ItemRequestShort> toItemRequestShort(Iterable<ItemRequest> itemRequests) {
-        List<ItemRequestShort> itemRequestDtoList = new ArrayList<>();
-        for (ItemRequest itemRequest : itemRequests) {
-            itemRequestDtoList.add(toItemRequestShort(itemRequest));
+    public static List<ItemRequestShort> toItemRequestShort(Iterable<ItemRequestDto> itemRequestDtos) {
+        List<ItemRequestShort> itemRequestShortsList = new ArrayList<>();
+        for (ItemRequestDto itemRequestDto : itemRequestDtos) {
+            itemRequestShortsList.add(toItemRequestShort(itemRequestDto));
         }
-        return itemRequestDtoList;
+        return itemRequestShortsList;
     }
 
 }

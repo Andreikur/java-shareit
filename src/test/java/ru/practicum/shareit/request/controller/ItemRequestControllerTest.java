@@ -84,8 +84,8 @@ class ItemRequestControllerTest {
     //!!
     @Test
     void getAllYourItemRequestDtoTest() throws Exception {
-        ItemRequest itemRequest = ItemRequestMapper.toItemRequest(itemRequestDto);
-        ItemRequestShort itemRequestShort = ItemRequestMapper.toItemRequestShort(itemRequest);
+        //ItemRequest itemRequest = ItemRequestMapper.toItemRequest(itemRequestDto);
+        ItemRequestShort itemRequestShort = ItemRequestMapper.toItemRequestShort(itemRequestDto);
         when(requestService.getAllYourItemRequestDto(anyLong())).thenReturn(Collections.singletonList(itemRequestShort));
 
         mockMvc.perform(get("/requests")
@@ -100,8 +100,8 @@ class ItemRequestControllerTest {
 
     @Test
     void getAllOthersItemRequestDtoTest() throws Exception {
-        ItemRequest itemRequest = ItemRequestMapper.toItemRequest(itemRequestDto);
-        ItemRequestShort itemRequestShort = ItemRequestMapper.toItemRequestShort(itemRequest);
+        //ItemRequest itemRequest = ItemRequestMapper.toItemRequest(itemRequestDto);
+        ItemRequestShort itemRequestShort = ItemRequestMapper.toItemRequestShort(itemRequestDto);
         when(requestService.getAllOthersItemRequestDto(anyLong())).thenReturn(Collections.singletonList(itemRequestShort));
 
         mockMvc.perform(get("/requests/all")
@@ -116,8 +116,8 @@ class ItemRequestControllerTest {
 
     @Test
     void getItemRequestDtoTest() throws Exception {
-        ItemRequest itemRequest = ItemRequestMapper.toItemRequest(itemRequestDto);
-        ItemRequestShort itemRequestShort = ItemRequestMapper.toItemRequestShort(itemRequest);
+        //ItemRequest itemRequest = ItemRequestMapper.toItemRequest(itemRequestDto);
+        ItemRequestShort itemRequestShort = ItemRequestMapper.toItemRequestShort(itemRequestDto);
         when(requestService.getItemRequest(anyLong(), anyLong())).thenReturn(itemRequestShort);
 
         mockMvc.perform(get("/requests/1")

@@ -53,9 +53,6 @@ public class ItemServiceImpl implements ItemService {
             ItemRequest itemRequest = requestRepository.findById(itemDto.getRequestId()).orElseThrow(() ->
                     new UserNotFoundException(String.format("Запрос с таким id не найден")));
             item.setRequest(itemRequest);
-
-            List<Item> itemSet = itemRequest.getItems();
-            itemSet.add(item);
         }
         itemRepository.save(item);
         return ItemMapper.toItemDto(item);
@@ -124,11 +121,11 @@ public class ItemServiceImpl implements ItemService {
         if (item.getOwner().getId() == userId) {
             itemBooking.setLastBooking(
                     bookingRepository.findLastBooking(
-                            item.getId(), LocalDateTime.now(), userId)
+                                    item.getId(), LocalDateTime.now(), userId)
                             .map(BookingMapper::toBookingDtoShort).orElse(null));
             itemBooking.setNextBooking(
                     bookingRepository.findNextBooking(
-                            item.getId(), LocalDateTime.now(), userId)
+                                    item.getId(), LocalDateTime.now(), userId)
                             .map(BookingMapper::toBookingDtoShort).orElse(null));
         } else {
             itemBooking.setLastBooking(null);
