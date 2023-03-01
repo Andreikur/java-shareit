@@ -46,8 +46,8 @@ public class RequestServiceImpl implements RequestService {
     public List<ItemRequestShort> getAllYourItemRequestDto(long userId) {
         userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException(String.format("Пользователь с таким id не найден")));
-        List<ItemRequestDto> itemRequestDtoList = ItemRequestMapper.
-                toItemRequestDto(requestRepository.findAllItemRequestByReguestor(userId));
+        List<ItemRequestDto> itemRequestDtoList = ItemRequestMapper
+                .toItemRequestDto(requestRepository.findAllItemRequestByReguestor(userId));
 
         this.setItemsToItemRequestDto(itemRequestDtoList);
 
@@ -59,8 +59,8 @@ public class RequestServiceImpl implements RequestService {
     public List<ItemRequestShort> getAllOthersItemRequestDto(long userId) {
         userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException(String.format("Пользователь с таким id не найден")));
-        List<ItemRequestDto> itemRequestDtoList = ItemRequestMapper.
-                toItemRequestDto(requestRepository.findAllItemRequestCreatedByOthers(userId));
+        List<ItemRequestDto> itemRequestDtoList = ItemRequestMapper
+                .toItemRequestDto(requestRepository.findAllItemRequestCreatedByOthers(userId));
 
         return ItemRequestMapper.toItemRequestShort(itemRequestDtoList);
     }
@@ -115,8 +115,8 @@ public class RequestServiceImpl implements RequestService {
         return ItemRequestMapper.toItemRequestShort(itemRequestDto);
     }
 
-    private List<ItemRequestDto> setItemsToItemRequestDto(List<ItemRequestDto> itemRequestDtoList){
-        for (ItemRequestDto itemRequestDto : itemRequestDtoList){
+    private List<ItemRequestDto> setItemsToItemRequestDto(List<ItemRequestDto> itemRequestDtoList) {
+        for (ItemRequestDto itemRequestDto : itemRequestDtoList) {
             List<Item> itemList = itemRepository.findAllThisItemRequest(ItemRequestMapper.toItemRequest(itemRequestDto));
             itemRequestDto.setItems(itemList);
         }

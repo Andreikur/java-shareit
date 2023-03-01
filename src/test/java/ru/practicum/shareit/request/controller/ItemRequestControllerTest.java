@@ -22,7 +22,6 @@ import static org.mockito.ArgumentMatchers.any;
 
 import ru.practicum.shareit.request.dto.ItemRequestShort;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
-import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.service.RequestService;
 import ru.practicum.shareit.user.model.User;
 import org.springframework.http.MediaType;
