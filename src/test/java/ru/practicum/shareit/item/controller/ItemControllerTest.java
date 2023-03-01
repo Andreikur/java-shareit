@@ -54,7 +54,7 @@ class ItemControllerTest {
     private UserDto userDto2;
     private Item item1;
 
-    private ItemDto itemDto;
+    private ItemDto itemDto1;
 
     private ItemBooking itemBooking;
     private Map<String, String> map;
@@ -73,8 +73,8 @@ class ItemControllerTest {
         map = new HashMap<>();
         map.put("email","user1update@mail.com");
 
-        item1 = new Item(1, "Item1", "Item1_description", true, user2, null);
-        itemDto = ItemMapper.toItemDto(item1);
+        item1 = new Item(1, "Item1", "Item1_description", true, user1, null);
+        itemDto1 = ItemMapper.toItemDto(item1);
         itemBooking = ItemMapper.toItemBooking(item1);
 
         Comment comment1 = new Comment(1L, "Comment_text", item1, user2);
@@ -84,27 +84,27 @@ class ItemControllerTest {
     @Test
     void addItemTest() throws Exception {
         when(itemService.addItem(any(ItemDto.class), anyLong()))
-                .thenReturn(itemDto);
+                .thenReturn(itemDto1);
 
         mockMvc.perform(post("/items")
-                        .content(mapper.writeValueAsString(itemDto))
+                        .content(mapper.writeValueAsString(itemDto1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(HEADER, userDto1.getId()))
                 .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(itemDto)));
+                .andExpect(content().json(mapper.writeValueAsString(itemDto1)));
     }
 
     @Test
     void updateTest() throws Exception {
         when((itemService.updateItem(anyLong(), anyMap(), anyLong())))
-                .thenReturn(itemDto);
+                .thenReturn(itemDto1);
 
         mockMvc.perform(patch("/items/1")
                         .content(mapper.writeValueAsString(map))
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(HEADER, userDto1.getId()))
                 .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(itemDto)));
+                .andExpect(content().json(mapper.writeValueAsString(itemDto1)));
     }
 
     @Test
@@ -128,17 +128,17 @@ class ItemControllerTest {
                 .andExpect(content().json(mapper.writeValueAsString(List.of(itemBooking))));
     }
 
-   /* @Test
+    @Test
     void searchItemTest() throws Exception {
         when(itemService.searchItem(anyInt(), anyString()))
-                .thenReturn(List.of(itemDto));
+                .thenReturn(List.of(itemDto1));
 
         mockMvc.perform(get("/items/search")
                         .param("text", "Item1")
                         .header(HEADER, userDto1.getId()))
                 .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(List.of(itemDto))));
-    }*/
+                .andExpect(content().json(mapper.writeValueAsString(List.of(itemDto1))));
+    }
 
    @Test
     void addComment() throws Exception {

@@ -103,6 +103,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     public List<ItemDto> searchItem(long idUserOwner, String text) {
+        text = text.toLowerCase();
         List<ItemDto> itemDtoList = new ArrayList<>();
         if (text.isBlank()) {
             return itemDtoList;
