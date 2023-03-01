@@ -33,6 +33,7 @@ public class Item {
     private Boolean available = null;
     @ToString.Exclude
     @ManyToOne
+    @JoinColumn(name = "owner_id")
     private User owner;
     @ToString.Exclude
     @ManyToOne

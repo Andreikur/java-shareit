@@ -43,12 +43,12 @@ CREATE TABLE  IF NOT EXISTS comments
     author_id BIGINT REFERENCES users (id) ON DELETE CASCADE
 );
 
-CREATE TABLE  IF NOT EXISTS item_request_items
-(
-    item_request_id INTEGER NOT NULL,
-    item_id INTEGER NOT NULL,
-    constraint ITEM_REQUEST_ITEMS_ITEMS_ID_FK
-        foreign key (ITEM_ID) references ITEMS,
-    constraint ITEM_REQUEST_ITEMS_REQUESTS_ID_FK
-        foreign key (ITEM_REQUEST_ID) references REQUESTS
-);
+--CREATE TABLE  IF NOT EXISTS item_request_items
+--(
+--    item_request_id INTEGER NOT NULL,
+--   item_id INTEGER NOT NULL,
+--    constraint ITEM_REQUEST_ITEMS_ITEMS_ID_FK
+--        foreign key (ITEM_ID) references ITEMS,
+--    constraint ITEM_REQUEST_ITEMS_REQUESTS_ID_FK
+--        foreign key (ITEM_REQUEST_ID) references REQUESTS
+--);

@@ -31,6 +31,7 @@ public class ItemRequest {
 
     @ToString.Exclude
     @ManyToOne
+    @JoinColumn(name = "requestor")
     private User requestor;             //пользователь создавший запрос
 
     @Column(name = "created", nullable = false)
