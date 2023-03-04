@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.BookingDto;
@@ -126,28 +127,30 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Transactional(readOnly = true)
-    public List<BookingDto> getAllBooking(long idUser, String state) {
-        userRepository.findById(idUser).orElseThrow(() ->
+    public List<BookingDto> getAllBooking(long idUserOwner, String state, int from, int size) {
+        userRepository.findById(idUserOwner).orElseThrow(() ->
                 new UserNotFoundException(String.format("Пользователь с таким id не найден")));
         List<Booking> bookingsList = new ArrayList<>();
+        int page = from / size;
+        PageRequest pageRequest = PageRequest.of(page, size);
         switch (state) {
             case "ALL":
-                bookingsList.addAll(bookingRepository.findAllByBookerOrder(idUser));
+                bookingsList.addAll(bookingRepository.findAllByBookerOrder(idUserOwner, pageRequest));
                 break;
             case "CURRENT":
-                bookingsList.addAll(bookingRepository.findByBookerCurrent(idUser, LocalDateTime.now()));
+                bookingsList.addAll(bookingRepository.findByBookerCurrent(idUserOwner, LocalDateTime.now(), pageRequest));
                 break;
             case "PAST":
-                bookingsList.addAll(bookingRepository.findByBookerPast(idUser, LocalDateTime.now()));
+                bookingsList.addAll(bookingRepository.findByBookerPast(idUserOwner, LocalDateTime.now(), pageRequest));
                 break;
             case "FUTURE":
-                bookingsList.addAll(bookingRepository.findByBookerFuture(idUser, LocalDateTime.now()));
+                bookingsList.addAll(bookingRepository.findByBookerFuture(idUserOwner, LocalDateTime.now(), pageRequest));
                 break;
             case "WAITING":
-                bookingsList.addAll(bookingRepository.findByBookerAndState(idUser, StatusBooking.WAITING));
+                bookingsList.addAll(bookingRepository.findByBookerAndState(idUserOwner, StatusBooking.WAITING, pageRequest));
                 break;
             case "REJECTED":
-                bookingsList.addAll(bookingRepository.findByBookerAndState(idUser, StatusBooking.REJECTED));
+                bookingsList.addAll(bookingRepository.findByBookerAndState(idUserOwner, StatusBooking.REJECTED, pageRequest));
                 break;
             default:
                 throw new BookingAvailableException("Unknown state: UNSUPPORTED_STATUS");
@@ -157,28 +160,30 @@ public class BookingServiceImpl implements BookingService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<BookingDto> getAllBookingOwner(Long idUserOwner, String state) {
+    public List<BookingDto> getAllBookingOwner(Long idUserOwner, String state, int from, int size) {
         userRepository.findById(idUserOwner).orElseThrow(() ->
                 new UserNotFoundException(String.format("Пользователь с таким id не найден")));
         List<Booking> bookingsList = new ArrayList<>();
+        int page = from / size;
+        PageRequest pageRequest = PageRequest.of(page, size);
         switch (state) {
             case "ALL":
-                bookingsList.addAll(bookingRepository.getByOwner(idUserOwner));
+                bookingsList.addAll(bookingRepository.getByOwner(idUserOwner, pageRequest));
                 break;
             case "CURRENT":
-                bookingsList.addAll(bookingRepository.getByOwnerCurrent(idUserOwner, LocalDateTime.now()));
+                bookingsList.addAll(bookingRepository.getByOwnerCurrent(idUserOwner, LocalDateTime.now(), pageRequest));
                 break;
             case "PAST":
-                bookingsList.addAll(bookingRepository.getByOwnerPast(idUserOwner, LocalDateTime.now()));
+                bookingsList.addAll(bookingRepository.getByOwnerPast(idUserOwner, LocalDateTime.now(), pageRequest));
                 break;
             case "FUTURE":
-                bookingsList.addAll(bookingRepository.getByOwnerFuture(idUserOwner, LocalDateTime.now()));
+                bookingsList.addAll(bookingRepository.getByOwnerFuture(idUserOwner, LocalDateTime.now(), pageRequest));
                 break;
             case "WAITING":
-                bookingsList.addAll(bookingRepository.findByOwnerAndState(idUserOwner, StatusBooking.WAITING));
+                bookingsList.addAll(bookingRepository.findByOwnerAndState(idUserOwner, StatusBooking.WAITING, pageRequest));
                 break;
             case "REJECTED":
-                bookingsList.addAll(bookingRepository.findByOwnerAndState(idUserOwner, StatusBooking.REJECTED));
+                bookingsList.addAll(bookingRepository.findByOwnerAndState(idUserOwner, StatusBooking.REJECTED, pageRequest));
                 break;
             default:
                 throw new BookingAvailableException("Unknown state: UNSUPPORTED_STATUS");

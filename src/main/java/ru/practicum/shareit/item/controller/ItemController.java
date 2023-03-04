@@ -11,6 +11,8 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
+import static ru.practicum.shareit.ShareItApp.HEADER;
+
 /**
  * TODO Sprint add-controllers.
  */
@@ -24,83 +26,75 @@ public class ItemController {
 
     /**
      * Добавляем вещь
-     *
      * @param item
-     * @param headers
+     * @param userId
      * @return
      */
     @PostMapping
     public ItemDto addItem(@Valid @RequestBody ItemDto item,
-                           @RequestHeader Map<String, String> headers) {
-        String stringIdUserOwner1 = headers.get("x-sharer-user-id");
-        long idUserOwner = Long.parseLong(stringIdUserOwner1);
-        return itemService.addItem(item, idUserOwner);
+                           @RequestHeader (HEADER) long userId) {
+        return itemService.addItem(item, userId);
     }
 
     /**
      * Обновляем вещь
-     *
      * @param itemData
      * @param id
-     * @param headers
+     * @param userId
      * @return
      */
     @PatchMapping("{id}")
     public ItemDto updateItem(@Valid @RequestBody Map<String, String> itemData,
                               @PathVariable Long id,
-                              @RequestHeader Map<String, String> headers) {
-        String stringIdUserOwner1 = headers.get("x-sharer-user-id");
-        long idUserOwner = Long.parseLong(stringIdUserOwner1);
-        return itemService.updateItem(id, itemData, idUserOwner);
+                              @RequestHeader (HEADER) long userId) {
+        return itemService.updateItem(id, itemData, userId);
     }
 
     /**
-     * @param headers
+     * Получаем вещь
+     * @param userId
      * @param id
      * @return
      */
     @GetMapping("{id}")
-    public ItemBooking getItem(@RequestHeader Map<String, String> headers,
+    public ItemBooking getItem(@RequestHeader (HEADER) long userId,
                                @PathVariable Long id) {
-        String stringIdUserOwner = headers.get("x-sharer-user-id");
-        long userId = Long.parseLong(stringIdUserOwner);
         return itemService.getItem(userId, id);
     }
 
     /**
      * Получаем  список вещей по параметрам
-     *
-     * @param headers
+     * @param userId
      * @return
      */
     @GetMapping
-    public List<ItemBooking> getAllItem(@RequestHeader Map<String, String> headers) {
-        String stringIdUserOwner = headers.get("x-sharer-user-id");
-        long idUserOwner = Long.parseLong(stringIdUserOwner);
-        return itemService.getAllItemsUser(idUserOwner);
+    public List<ItemBooking> getAllItem(@RequestHeader (HEADER) long userId) {
+        return itemService.getAllItemsUser(userId);
     }
 
     /**
      * Поиск вещей по описанию
-     *
-     * @param headers
+     * @param userId
      * @param text
      * @return
      */
     @GetMapping({"/search"})
-    public List<ItemDto> searchItem(@RequestHeader Map<String, String> headers,
+    public List<ItemDto> searchItem(@RequestHeader (HEADER) long userId,
                                     @RequestParam String text) {
-        String stringIdUserOwner = headers.get("x-sharer-user-id");
-        long idUserOwner = Long.parseLong(stringIdUserOwner);
-        return itemService.searchItem(idUserOwner, text.toLowerCase());
+        return itemService.searchItem(userId, text);
     }
 
+    /**
+     * Добавляем коментарий
+     * @param commentDto
+     * @param userId
+     * @param itemId
+     * @return
+     */
     @PostMapping("/{itemId}/comment")
     public CommentDto addComment(@Valid @RequestBody CommentDto commentDto,
-                                 @RequestHeader Map<String, String> headers,
+                                 @RequestHeader (HEADER) long userId,
                                  @PathVariable long itemId) {
-        String stringIdUserOwner = headers.get("x-sharer-user-id");
-        long userId = Long.parseLong(stringIdUserOwner);
         return itemService.addComment(userId, itemId, commentDto);
     }
 }

@@ -19,6 +19,8 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.request.repository.RequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
@@ -37,6 +39,7 @@ public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final BookingRepository bookingRepository;
+    private final RequestRepository requestRepository;
 
     @Transactional
     @Override
@@ -44,7 +47,14 @@ public class ItemServiceImpl implements ItemService {
         User user = userRepository.findById(idUserOwner).orElseThrow(() ->
                 new UserNotFoundException(String.format("Пользователь с таким id не найден")));
         itemDto.setOwner(user);
-        Item item = itemRepository.save(ItemMapper.toItem(itemDto));
+
+        Item item = ItemMapper.toItem(itemDto);
+        if (itemDto.getRequestId() != null) {
+            ItemRequest itemRequest = requestRepository.findById(itemDto.getRequestId()).orElseThrow(() ->
+                    new UserNotFoundException(String.format("Запрос с таким id не найден")));
+            item.setRequest(itemRequest);
+        }
+        itemRepository.save(item);
         return ItemMapper.toItemDto(item);
     }
 
@@ -86,12 +96,6 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Transactional(readOnly = true)
-    public List<ItemDto> getAllItem() {
-        List<Item> items = itemRepository.findAll();
-        return ItemMapper.toItemDto(items);
-    }
-
-    @Transactional(readOnly = true)
     public List<ItemBooking> getAllItemsUser(long idUserOwner) {
         return itemRepository.findAllByOwnerIdOrderByIdAsc(idUserOwner).stream()
                 .map(item -> setBookings(idUserOwner, item))
@@ -99,6 +103,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     public List<ItemDto> searchItem(long idUserOwner, String text) {
+        text = text.toLowerCase();
         List<ItemDto> itemDtoList = new ArrayList<>();
         if (text.isBlank()) {
             return itemDtoList;
@@ -117,11 +122,11 @@ public class ItemServiceImpl implements ItemService {
         if (item.getOwner().getId() == userId) {
             itemBooking.setLastBooking(
                     bookingRepository.findLastBooking(
-                            item.getId(), LocalDateTime.now(), userId)
+                                    item.getId(), LocalDateTime.now(), userId)
                             .map(BookingMapper::toBookingDtoShort).orElse(null));
             itemBooking.setNextBooking(
                     bookingRepository.findNextBooking(
-                            item.getId(), LocalDateTime.now(), userId)
+                                    item.getId(), LocalDateTime.now(), userId)
                             .map(BookingMapper::toBookingDtoShort).orElse(null));
         } else {
             itemBooking.setLastBooking(null);
