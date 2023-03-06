@@ -11,7 +11,6 @@ import ru.practicum.shareit.exception.BookingBadRequestException;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
-import java.util.Map;
 
 /**
  * TODO Sprint add-bookings.
