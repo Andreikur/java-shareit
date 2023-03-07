@@ -35,8 +35,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.List;
 import java.util.Map;
 
-@AutoConfigureMockMvc
-@WebMvcTest(ItemController.class)
+//@AutoConfigureMockMvc
+@WebMvcTest(controllers = ItemController.class)
 class ItemControllerTest {
 
     @MockBean
@@ -131,7 +131,7 @@ class ItemControllerTest {
 
     @Test
     void searchItemTest() throws Exception {
-        when(itemService.searchItem(anyInt(), anyString()))
+        when(itemService.searchItem(anyLong(), anyString()))
                 .thenReturn(List.of(itemDto1));
 
         mockMvc.perform(get("/items/search")
