@@ -1,4 +1,4 @@
-package shareit.request.controller;
+package ru.practicum.shareit.request.controller;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
