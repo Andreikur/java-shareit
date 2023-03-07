@@ -28,9 +28,9 @@ services:
     ports:
       - "6541:5432"
     environment:
-     - POSTGRES_DB=shareit
-     - POSTGRES_USER=postgres
-     - POSTGRES_PASSWORD=iamroot
+      - POSTGRES_DB=shareit
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=iamroot
 
 
       #- SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
