@@ -19,7 +19,6 @@ public class ItemDto {
     private String description;
     @NotNull
     private Boolean available = null;
-    //private UserDto owner;
     private Long requestId;
 
     public ItemDto(long id, String name, String description, Boolean available) {
@@ -27,6 +26,5 @@ public class ItemDto {
         this.name = name;
         this.description = description;
         this.available = available;
-        //this.owner = owner;
     }
 }
